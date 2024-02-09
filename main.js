@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const codex = document.getElementById("codex")
     const codexModal = document.getElementById("codexModal")
     const codexClosingBtn = document.getElementById("codexClosingBtn")
+    const armor = document.getElementById("armor")
+    const inventoryModal = document.getElementById("inventoryModal")
+    const inventoryClosingBtn = document.getElementById("inventoryClosingBtn")
     // const lvlUpContainer = document.getElementById("lvlUpContainer")
     // const lvlUpCardsContainer = document.getElementById("lvlUpCardsContainer")
     // const lvlUpCardStat1 = document.getElementById("lvlUpCardStat1")
@@ -41,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
         def : 1,
         hp : 20,
         maxHp : 20,
+        int : 1,
         mana : 20,
         maxMana : 20,
         xp : 0,
@@ -48,14 +52,36 @@ document.addEventListener("DOMContentLoaded", function () {
         lvl : 1,
         coinInPocket : 0,
         soulInPocket : 0,
+        weight : 0,
+        maxWeight : 100
     }
 
     let inventory = {
-        equipements : {},
+        equipement : {
+            sword : {
+                atk : 3,
+                weight : 5 
+            }
+        },
         items : {}
     }
 
-    let equipedEquipements = {}
+    let equipedEquipement = {
+        head : null,
+        neckless : null,
+        chest : null,
+        leftArm : null,
+        rightArm : {
+            atk : inventory.equipement.sword.atk,
+            weight : inventory.equipement.sword.weight
+        },
+        leftRing : null,
+        rightRing : null,
+        greaves : null,
+        boots : null,
+    }
+
+    console.log(inventory.equipement.sword.atk)
 
     let boss = {
         name : "",
@@ -185,23 +211,56 @@ document.addEventListener("DOMContentLoaded", function () {
         codexModal.style.display = "none"
     }
 
+    const openInventory = () => {
+        inventoryModal.style.display = "flex"
+    }
+
+    const closeInventory = () => {
+        inventoryModal.style.display = "none"
+    }
+
     // -- FIGHT LOGIC -- //
 
     const heroAtk = () => {
-        let damage = hero.atk
-        boss.hp -= damage
-
-        let message = `${hero.name} attacks and deals ${damage} damage to ${boss.name}!`
-        gameStateContainer.innerHTML = message
-
-        updateBossBars()
-
-        if (boss.hp <= 0) {
-            bossDeath(hero, boss)
-            boss.hp = boss.maxHp
-
-            if (hero.xp >= hero.requiredXp) {
-                lvlUp(hero)
+        let damage = (hero.atk + equipedEquipement.rightArm.atk)
+    
+        if (boss.hp > 0) {
+            boss.hp -= damage
+    
+            let message = `${hero.name} attacks and deals ${damage} damage to ${boss.name}!`
+            gameStateContainer.innerHTML = message
+    
+            updateBossBars()
+    
+            if (boss.hp <= 0) {
+                bossDeath(hero, boss)
+                boss.hp = boss.maxHp
+    
+                if (hero.xp >= hero.requiredXp) {
+                    lvlUp(hero)
+                }
+            }
+    
+            setTimeout(() => {
+                generateBossAtk(hero)
+            }, 1000)
+        }
+    }
+    
+    const generateBossAtk = (hero) => {
+        let damage = boss.atk
+    
+        if (hero.hp > 0) {
+            hero.hp -= damage
+    
+            let message = `${boss.name} attacks and deals ${damage} damage to ${hero.name}!`;
+            gameStateContainer.innerHTML = message;
+    
+            updateHeroBars()
+    
+            if (hero.hp <= 0) {
+                gameStateContainer.innerHTML = "GAME OVER"
+                hero.hp = 0
             }
         }
     }
@@ -211,7 +270,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const heroHeal = () => {
+        let heal = (10 * hero.int)
+        let healManaCost = (5 / hero.int)
+        hero.mana -= healManaCost 
 
+        if (hero.hp < hero.maxHp) {
+            hero.hp += heal
+    
+            if (hero.hp > hero.maxHp) {
+                hero.hp = hero.maxHp
+            }
+        }
+
+        updateHeroBars()
+
+        setTimeout(() => {
+            generateBossAtk(hero)
+        }, 1000)
     }
 
     const bossDeath = (hero, boss) => {
@@ -517,4 +592,6 @@ document.addEventListener("DOMContentLoaded", function () {
     healBtn.addEventListener("click", heroHeal)
     codex.addEventListener("click", openCodex)
     codexClosingBtn.addEventListener("click", closeCodex)
+    armor.addEventListener("click", openInventory)
+    inventoryClosingBtn.addEventListener("click", closeInventory)
 })
