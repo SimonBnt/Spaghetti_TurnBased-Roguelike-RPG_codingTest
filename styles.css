@@ -1,0 +1,214 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #222;
+}
+
+header {
+    text-align: center;
+    border-bottom: solid blanchedalmond 2px;
+    padding: 2rem 0;
+    text-transform: uppercase;
+    color: blanchedalmond;
+}
+
+main {
+    background-color: #555;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#gameContainer {
+    background-color: #444;
+    border: solid 2px blanchedalmond;
+    border-radius: 0.5rem;
+    width: 768px;
+    height: 800px;
+    margin: 2rem 0;
+    position: relative;
+}
+
+#screen {
+    border: solid 2px blanchedalmond;
+    border-radius: 0.5rem;
+    margin: 2rem;
+    height: 500px;
+    background-color: #333;
+    position: relative;
+    color: blanchedalmond;
+}
+
+#goldSoulContainer {
+    border: solid 2px blanchedalmond;
+    border-radius: 0.5rem;
+    margin: 1rem;
+    width: fit-content;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem 0;
+}
+
+#waveContainer {
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#fightContainer {
+    display: flex;
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    right: 2rem;
+}
+
+#heroContainer {
+    margin-right: auto;
+    border: solid 2px blanchedalmond;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+#bossContainer {
+    border: solid 2px blanchedalmond;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-left: auto;
+}
+
+#gameStateContainer {
+    background-color: #333;
+    border: solid 2px blanchedalmond;
+    border-radius: 0.5rem;
+    margin: 2rem;
+    height: 100px;
+    text-align: left;
+    padding: 1rem;
+    color: blanchedalmond;
+}
+
+#controllerContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0 2rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    position: absolute;
+    bottom: 2rem;
+    left: 0;
+    right: 0;
+}
+
+.controllBtns {
+    border: solid 2px blanchedalmond;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    background-color: #333;
+    width: fit-content;
+}
+
+#modal {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: solid #333 2px;
+    border-radius: 0.5rem;
+}
+
+#lvlUpContainer {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 500px;
+    border: solid #333 2px;
+    border-radius: 0.5rem;
+    background-color: #eee;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+}
+
+#chest:hover {
+    cursor: pointer;
+}
+
+#lvlUpCardsContainer {
+    display: flex;
+    gap: 0 1rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.lvlUpCards {
+    border: solid #333 2px;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    width: 80px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+footer {
+    border-top: solid blanchedalmond 2px;
+}
+
+#versus {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 50%;
+}
+
+.barContainers {
+    height: 10px;
+    border: solid 1px white;
+    border-radius: 0.5rem;
+    width: 100px;
+}
+
+.mainBarContainers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.5rem 0;
+}
+
+.bar {
+    border-radius: 0.5rem;
+    height: 10px;
+}
+
+.svg {
+    width: 80px;
+    margin-top: 1rem;
+}
+
+.svg2 {
+    width: 20px;
+}
+
+.nameContainers {
+    display: flex;
+    gap: 0 1rem;
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test RPG spaghetti</title>
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Test RPG spaghetti</h1>
+    </header>
+    <main>
+        <div id="gameContainer">
+            <div id="screen">
+                <div id="goldSoulContainer">
+                    <div id="goldContainer">
+                        <img src="/svg/coin.svg" alt="" class="svg2">
+                        <span id="gold"></span>
+                    </div>
+                    <div id="soulContainer">
+                        <img src="/svg/soul.svg" alt="" class="svg2">
+                        <span id="soul"></span>
+                    </div>
+                </div>
+                <div id="waveContainer"></div>
+                <div id="versus"><img src="/svg/vs.svg" alt="" class="svg"></div>
+                <div id="fightContainer">
+                    <div id="heroContainer" class="mainBarContainers">
+                            <div class="nameContainers">
+                                <div id="heroName"></div>
+                                <div id="heroLvl"></div>
+                            </div>
+                            <div class="barContainers" id="heroLifeBarContainer"></div>
+                            <div class="barContainers" id="heroManaBarContainer"></div>
+                            <div class="barContainers" id="heroXpBarContainer"></div>
+                            <div id="hero"><img src="/svg/hero.svg" alt="" class="svg"></div>
+                    </div>
+                    <div id="bossContainer" class="mainBarContainers">
+                            <div class="nameContainers">
+                                <div id="bossName"></div>
+                                <div id="bossLvl"></div>
+                            </div>
+                            <div class="barContainers" id="bossLifeBarContainer"></div>
+                            <div class="barContainers" id="bossManaBarContainer"></div>
+                            <div id="boss"><img id="bossImg" src="/svg/egg.svg" alt="" class="svg"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="gameStateContainer"></div>
+            <div id="controllerContainer">
+                <div id="atkBtn" class="controllBtns">ATK</div>
+                <!-- <div id="defBtn" class="controllBtns">DEF</div> -->
+            </div>
+        </div>
+        <div id="modal">
+            <div id="lvlUpContainer">
+                <p>congratulation !</p>
+                <img src="" alt="" id="chest">
+                <div id="lvlUpCardsContainer">
+                    <div class="lvlUpCards" id="lvlUpCard1">
+                        <img src="" alt="" class="lvlUpCardImg">
+                    </div>
+                    <div class="lvlUpCards" id="lvlUpCard2">
+                        <img src="" alt="" class="lvlUpCardImg">
+                    </div>
+                    <div class="lvlUpCards" id="lvlUpCard3">
+                        <img src="" alt="" class="lvlUpCardImg">
+                    </div>
+                    <div class="lvlUpCards" id="lvlUpCard4">
+                        <img src="" alt="" class="lvlUpCardImg">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer></footer>
+</body>
+</html>
