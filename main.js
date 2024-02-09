@@ -253,8 +253,8 @@ document.addEventListener("DOMContentLoaded", function () {
         if (hero.hp > 0) {
             hero.hp -= damage
     
-            let message = `${boss.name} attacks and deals ${damage} damage to ${hero.name}!`;
-            gameStateContainer.innerHTML = message;
+            let message = `${boss.name} attacks and deals ${damage} damage to ${hero.name}!`
+            gameStateContainer.innerHTML = message
     
             updateHeroBars()
     
