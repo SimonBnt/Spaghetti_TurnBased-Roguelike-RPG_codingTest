@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // const defBtn = document.getElementById("defBtn")
 
     let hero = {
-        name : "Simon",
+        name : "Hero",
         atk : 100,
         def : 2,
         hp : 100,
