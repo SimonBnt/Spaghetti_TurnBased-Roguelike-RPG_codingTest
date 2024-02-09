@@ -9,10 +9,14 @@
 </head>
 <body>
     <header>
-        <h1>Test RPG spaghetti</h1>
+        <h1>Spaghetti turnBased-rogueLike-rpg coding test</h1>
     </header>
     <main>
         <div id="gameContainer">
+            <div id="codexContainer">
+                <img id="codex" src="/img/hud/book.png" alt="">
+                <p>click to open codex</p>
+            </div>
             <div id="screen">
                 <div id="goldSoulContainer">
                     <div id="goldContainer">
@@ -44,32 +48,64 @@
                             </div>
                             <div class="barContainers" id="bossLifeBarContainer"></div>
                             <div class="barContainers" id="bossManaBarContainer"></div>
-                            <div id="boss"><img id="bossImg" src="/svg/egg.svg" alt="" class="svg"></div>
+                            <div id="boss"><img id="bossImg" src="" alt="monster" class="svg"></div>
                     </div>
                 </div>
             </div>
             <div id="gameStateContainer"></div>
             <div id="controllerContainer">
-                <div id="atkBtn" class="controllBtns">ATK</div>
-                <!-- <div id="defBtn" class="controllBtns">DEF</div> -->
+                <div id="atkBtn" class="controllBtns">Atack</div>
+                <div id="itemBtn" class="controllBtns">Item</div>
+                <div id="healBtn" class="controllBtns">Heal</div>
+            </div>
+            <div id="itemPocket">
+                <div class="item">
+                    <p>potion</p>
+                </div>
+                <div class="item">
+                    <p>bandage</p>
+                </div>
+                <div class="item">
+                    <p>mana potion</p>
+                </div>
+                <div class="item">
+                    <p>throwing knives</p>
+                </div>
             </div>
         </div>
-        <div id="modal">
+        <div id="codexModal">
+            <div id="codexModalContent">
+                <div id="codexClosingBtn">x</div>
+                <div class="codexInfosContainer" id="itemsInfosContainer">
+                    <h3>items :</h3>
+                    <div class="codexInfos" id="itemsInfo"></div>
+                </div>
+                <div class="codexInfosContainer" id="lootsInfosContainer">
+                    <h3>loot : </h3>
+                    <div class="codexInfos" id="lootsInfo"></div>
+                </div>
+                <div class="codexInfosContainer" id="mobsInfosContainer">
+                    <h3>monster :</h3>
+                    <div class="codexInfos" id="mobsInfo"></div>
+                </div>
+            </div>
+        </div>
+        <div id="lvlUpModal">
             <div id="lvlUpContainer">
                 <p>congratulation !</p>
                 <img src="" alt="" id="chest">
                 <div id="lvlUpCardsContainer">
-                    <div class="lvlUpCards" id="lvlUpCard1">
-                        <img src="" alt="" class="lvlUpCardImg">
+                    <div class="lvlUpCards" id="lvlUpCardStat1">
+                        <h3>Stat</h3>
                     </div>
-                    <div class="lvlUpCards" id="lvlUpCard2">
-                        <img src="" alt="" class="lvlUpCardImg">
+                    <div class="lvlUpCards" id="lvlUpCardStat2">
+                        <h3>Stat</h3>
                     </div>
-                    <div class="lvlUpCards" id="lvlUpCard3">
-                        <img src="" alt="" class="lvlUpCardImg">
+                    <div class="lvlUpCards" id="lvlUpCardLoot">
+                        <h3>Loot</h3>
                     </div>
-                    <div class="lvlUpCards" id="lvlUpCard4">
-                        <img src="" alt="" class="lvlUpCardImg">
+                    <div class="lvlUpCards" id="lvlUpCardItem">
+                        <h3>Item</h3>
                     </div>
                 </div>
             </div>

@@ -4,10 +4,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const heroXpBarContainer = document.getElementById("heroXpBarContainer")
     const bossLifeBarContainer = document.getElementById("bossLifeBarContainer")
     const bossManaBarContainer = document.getElementById("bossManaBarContainer")
-    const modal = document.getElementById("modal")
-    const lvlUpContainer = document.getElementById("lvlUpContainer")
+    const lvlUpModal = document.getElementById("lvlUpModal")
     const chest = document.getElementById("chest")
-
+    const codex = document.getElementById("codex")
+    const codexModal = document.getElementById("codexModal")
+    const codexClosingBtn = document.getElementById("codexClosingBtn")
+    // const lvlUpContainer = document.getElementById("lvlUpContainer")
+    // const lvlUpCardsContainer = document.getElementById("lvlUpCardsContainer")
+    // const lvlUpCardStat1 = document.getElementById("lvlUpCardStat1")
+    // const lvlUpCardStat2 = document.getElementById("lvlUpCardStat2")
+    // const lvlUpCardLoot = document.getElementById("lvlUpCardLoot")
+    // const lvlUpCardItem = document.getElementById("lvlUpCardItem")
+    // const lvlUpCards = document.querySelectorAll(".lvlUpCards")
+    
     const gold = document.getElementById("gold")
     const soul = document.getElementById("soul")
 
@@ -20,24 +29,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const gameStateContainer = document.getElementById("gameStateContainer")
     const waveContainer = document.getElementById("waveContainer")
+    const itemPocket = document.getElementById("itemPocket")
 
     const atkBtn = document.getElementById("atkBtn")
-    // const defBtn = document.getElementById("defBtn")
+    const itemBtn = document.getElementById("itemBtn")
+    const healBtn = document.getElementById("healBtn")
 
     let hero = {
         name : "Hero",
-        atk : 100,
-        def : 2,
-        hp : 100,
-        maxHp : 100,
-        mana : 100,
-        maxMana : 100,
+        atk : 1,
+        def : 1,
+        hp : 20,
+        maxHp : 20,
+        mana : 20,
+        maxMana : 20,
         xp : 0,
-        requiredXp : 10,
+        requiredXp : 100,
         lvl : 1,
         coinInPocket : 0,
         soulInPocket : 0,
     }
+
+    let inventory = {
+        equipements : {},
+        items : {}
+    }
+
+    let equipedEquipements = {}
 
     let boss = {
         name : "",
@@ -60,27 +78,44 @@ document.addEventListener("DOMContentLoaded", function () {
         skeleton : "img/mob/skeleton.png"
     }
 
-    // let boss = {
-    //     name: "Egg",
-    //     atk: 10,
-    //     def: 2,
-    //     hp: 100,
-    //     maxHp: 100,
-    //     mana: 100,
-    //     maxMana: 100,
-    //     lvl: 1,
-    //     earnedGold: 10,
-    //     earnedSoul: 10,
-    //     earnedXp: 50,
-    //     src : "/svg/egg.svg"
-    // }
+    let lvlUpStats = {
+        atk : {
+            stat : 1,
+            img : "/img/loot/strength.png"
+        },
+        hp : {
+            stat : 10,
+            img : "/img/loot/health.png"
+        }
+    }
+
+    let lvlUpLoots = {
+        gold : {
+            stat : hero.lvl * 50,
+            img : "svg/coin.svg"
+        },
+        soul : {
+            stat : hero.lvl * 100,   
+            img : "svg/soul.svg"
+        }
+    }
+
+    let lvlUpItems = {
+        sword : {
+            stat : 3,
+            img : "img/loot/sword.png" 
+        },
+        hammer : {
+            stat : 4,
+            img : "img/loot/hammer.png"
+        }
+    }
     
     let actualWave = 1
 
-    // -- HUD LOGIC -- //
+    // -- HUD -- //
 
     const showWave = () => {
-
         waveContainer.innerHTML = `${actualWave}/10`
     }
 
@@ -103,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const createBar = (container, ratio, color) => {
         let barWidth = 100
         let bar = document.createElement("div")
-        bar.style.width = barWidth * ratio + "px"
+        bar.style.width = `${barWidth * ratio}px`
         bar.style.background = color
         bar.classList.add("bar")
         container.appendChild(bar)
@@ -142,10 +177,18 @@ document.addEventListener("DOMContentLoaded", function () {
         createBossBar(boss)
     }
 
+    const openCodex = () => {
+        codexModal.style.display = "flex"
+    }
+
+    const closeCodex = () => {
+        codexModal.style.display = "none"
+    }
+
     // -- FIGHT LOGIC -- //
 
     const heroAtk = () => {
-        let damage = hero.atk - boss.def
+        let damage = hero.atk
         boss.hp -= damage
 
         let message = `${hero.name} attacks and deals ${damage} damage to ${boss.name}!`
@@ -161,6 +204,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 lvlUp(hero)
             }
         }
+    }
+
+    const openItemPocket = () => {
+        itemPocket.style.display = (itemPocket.style.display === "none") ? "flex" : "none"
+    }
+
+    const heroHeal = () => {
+
     }
 
     const bossDeath = (hero, boss) => {
@@ -188,36 +239,211 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const lvlUp = (hero) => {
-        modal.style.display = "block"
-        chest.src = "img/chest/closedChest.png"
-
-        chest.addEventListener("click", () => {
-            chest.src = "img/chest/openedChest.png"
-
-            
-        })
-
         hero.lvl++
+        hero.xp = 0
         let message = `${hero.name} is now level ${hero.lvl}`
         gameStateContainer.innerHTML = message
-
-        hero.xp = 0
-        updateHeroBars()
-
         showInfos()
+
+        lvlUpModal.style.display = "block"
+        chest.src = "img/chest/closedChest.png"
+
+        let chestIsOpenned = false
+
+        chest.addEventListener("click", () => {
+            if (chestIsOpenned === false) {
+                chestIsOpenned = true
+                chest.src = "img/chest/openedChest.png"
+                lvlUpCardsContainer.style.display = "flex"
+    
+                let selectedStatNumber1 = Math.floor(Math.random() * 2)
+                let selectedStatNumber2 = Math.floor(Math.random() * 2)
+                let selectedLootNumber = Math.floor(Math.random() * 2)
+                let selectedItemNumber = Math.floor(Math.random() * 2)
+    
+                let selectedStat = undefined
+                let selectedStat2 = undefined
+                let selectedLoot = undefined
+                let selectedItem = undefined
+    
+                let selectedStatImg = ""
+                let selectedStatImg2 = ""
+                let selectedLootImg = ""
+                let selectedItemImg = ""
+    
+                let selectedStatP = ""
+                let selectedStatP2 = ""
+                let selectedLootP = ""
+                let selectedItemP = ""
+    
+                switch (selectedStatNumber1) {
+                    case 0 : 
+                        selectedStat = lvlUpStats.atk.stat
+                        selectedStatImg = lvlUpStats.atk.img
+                        selectedStatP = "hero atk + 1"
+                        break
+                    case 1 :
+                        selectedStat = lvlUpStats.hp.stat
+                        selectedStatImg = lvlUpStats.hp.img
+                        selectedStatP = "hero hp + 10"
+                        break
+                    default : 
+                        console.log("stat1 undefined")
+                }
+
+                switch (selectedStatNumber2) {
+                    case 0 : 
+                        selectedStat2 = lvlUpStats.atk.stat
+                        selectedStatImg2 = lvlUpStats.atk.img
+                        selectedStatP2 = "hero atk + 1"
+                        break
+                    case 1 :
+                        selectedStat2 = lvlUpStats.hp.stat
+                        selectedStatImg2 = lvlUpStats.hp.img
+                        selectedStatP2 = "hero hp + 10"
+                        break
+                    default : 
+                        console.log("stat2 undefined")
+                }
+    
+                switch (selectedLootNumber) {
+                    case 0 : 
+                        selectedLoot = lvlUpLoots.gold.stat
+                        selectedLootImg = lvlUpLoots.gold.img
+                        selectedLootP = `gold + ${lvlUpLoots.gold.stat}`
+                        break
+                    case 1 :
+                        selectedLoot = lvlUpLoots.soul.stat
+                        selectedLootImg = lvlUpLoots.soul.img
+                        selectedLootP = `soul + ${lvlUpLoots.soul.stat}`
+                        break
+                    default : 
+                        console.log("loot undefined")
+                }
+    
+                switch (selectedItemNumber) {
+                    case 0 : 
+                        selectedItem = lvlUpItems.sword.stat
+                        selectedItemImg = lvlUpItems.sword.img
+                        selectedItemP = `hero atk + ${lvlUpItems.sword.stat}`
+                        break
+                    case 1 :
+                        selectedItem = lvlUpItems.hammer.stat
+                        selectedItemImg = lvlUpItems.hammer.img
+                        selectedItemP = `hero atk + ${lvlUpItems.hammer.stat}`
+                        break
+                    default : 
+                        console.log("item undefined")
+                }
+    
+                // -- Stat Card 1 -- // 
+                let lvlUpCardStat1Img = document.createElement("img")
+                lvlUpCardStat1Img.classList.add("lvlUpCardImg")
+                lvlUpCardStat1Img.src = selectedStatImg
+    
+                let lvlUpCardStat1P = document.createElement("p")
+                lvlUpCardStat1P.classList.add("lvlUpCardP")
+                lvlUpCardStat1P.innerHTML = selectedStatP
+
+                // -- Stat Card 2 -- // 
+                let lvlUpCardStat2Img = document.createElement("img")
+                lvlUpCardStat2Img.classList.add("lvlUpCardImg")
+                lvlUpCardStat2Img.src = selectedStatImg2
+    
+                let lvlUpCardStat2P = document.createElement("p")
+                lvlUpCardStat2P.classList.add("lvlUpCardP")
+                lvlUpCardStat2P.innerHTML = selectedStatP2
+
+                // -- Loot Card -- // 
+                let lvlUpCardLootImg = document.createElement("img")
+                lvlUpCardLootImg.classList.add("lvlUpCardImg")
+                lvlUpCardLootImg.src = selectedLootImg
+    
+                let lvlUpCardLootP = document.createElement("p")
+                lvlUpCardLootP.classList.add("lvlUpCardP")
+                lvlUpCardLootP.innerHTML = selectedLootP
+
+                // -- Item Card -- // 
+                let lvlUpCardItemImg = document.createElement("img")
+                lvlUpCardItemImg.classList.add("lvlUpCardImg")
+                lvlUpCardItemImg.src = selectedItemImg
+    
+                let lvlUpCardItemP = document.createElement("p")
+                lvlUpCardItemP.classList.add("lvlUpCardP")
+                lvlUpCardItemP.innerHTML = selectedItemP
+
+                const lvlUpCards = document.querySelectorAll(".lvlUpCards")
+
+                let cardsAreCreated = false
+
+                if (!cardsAreCreated) {
+                    let cardsElements = {
+                        statCard1: {
+                            img: lvlUpCardStat1Img,
+                            p: lvlUpCardStat1P
+                        },
+                        statCard2: {
+                            img: lvlUpCardStat2Img,
+                            p: lvlUpCardStat2P
+                        },
+                        lootCard: {
+                            img: lvlUpCardLootImg,
+                            p: lvlUpCardLootP
+                        },
+                        itemCard: {
+                            img: lvlUpCardItemImg,
+                            p: lvlUpCardItemP
+                        }
+                    }
+
+                    let cards = {
+                        statCard1 : lvlUpCards[0],
+                        statCard2 : lvlUpCards[1],
+                        lootCard : lvlUpCards[2],
+                        itemCard : lvlUpCards[3],
+                    }
+
+                    setTimeout(() => {
+                        Object.keys(cards).forEach((card, i) => {
+                            setTimeout(() => {
+                                let img = cardsElements[card].img
+                                let p = cardsElements[card].p
+                        
+                                cards[card].appendChild(img)
+                                cards[card].appendChild(p)
+    
+                                cards[card].style.display = "flex"
+                            }, i * 500)
+                        })
+                    }, 200) // ajust with chest openning animation time
+
+                    // Object.keys(cards).forEach((card) => {
+                    //     card.addEventListener("click", () => {
+                    //         lvlUpModal.style.display = "none"
+                    //     })
+                    // }) 
+                
+                    cardsAreCreated = true
+                }
+            }
+        })
     }
+
+    // const createLvlUpCard = () => {
+
+    // }
 
     const eliteBoss = (boss) => {
         const eliteSrc = "svg/boss.svg"
         bossImg.src = eliteSrc
 
-        boss.name = "Boss"
-        boss.maxHp = 200
-        boss.hp = boss.maxHp
-        boss.lvl = "??"
-        boss.earnedGold = 50
-        boss.earnedSoul = 100
-        boss.earnedXp = 100
+        // boss.name = "Boss"
+        // boss.maxHp = 200
+        // boss.hp = boss.maxHp
+        // boss.lvl = "??"
+        // boss.earnedGold = 50
+        // boss.earnedSoul = 100
+        // boss.earnedXp = 100
     }
 
     const createBoss = (hero, boss) => {
@@ -266,9 +492,9 @@ document.addEventListener("DOMContentLoaded", function () {
         bossImg.src = selectedMobImg
         boss.name = selectedBossName
         boss.lvl = selectedLvl 
-        boss.atk = (2 * selectedLvl)
+        boss.atk = (1 * selectedLvl)
         boss.def = (1 * selectedLvl)
-        boss.maxHp = (100 * selectedLvl)
+        boss.maxHp = (20 * selectedLvl)
         boss.hp = boss.maxHp
         boss.earnedGold = (10 * selectedLvl)
         boss.earnedSoul = (10 * selectedLvl)
@@ -277,7 +503,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // -- GAME -- //
 
-    lvlUp(hero)
+    // lvlUp(hero)
     createBoss(hero, boss)
     showWave()
     showInfos()
@@ -287,4 +513,8 @@ document.addEventListener("DOMContentLoaded", function () {
     showSoulAmount(hero)
 
     atkBtn.addEventListener("click", heroAtk)
+    itemBtn.addEventListener("click", openItemPocket)
+    healBtn.addEventListener("click", heroHeal)
+    codex.addEventListener("click", openCodex)
+    codexClosingBtn.addEventListener("click", closeCodex)
 })

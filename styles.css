@@ -10,9 +10,9 @@ body {
 header {
     text-align: center;
     border-bottom: solid blanchedalmond 2px;
-    padding: 2rem 0;
-    text-transform: uppercase;
+    padding: 2rem 1rem;
     color: blanchedalmond;
+    font-size: 0.8rem;
 }
 
 main {
@@ -28,16 +28,37 @@ main {
     background-color: #444;
     border: solid 2px blanchedalmond;
     border-radius: 0.5rem;
-    width: 768px;
-    height: 800px;
-    margin: 2rem 0;
-    position: relative;
+    min-width: 320px;
+    max-width: 768px;
+    height: fit-content;
+    margin: 2rem 1rem;
+}
+
+#codexContainer {
+    margin: 1rem 1rem 0 auto;
+    border: solid blanchedalmond 2px;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: center;
+    width: fit-content;
+    padding: 0.5rem;
+    gap: 0.5rem 0;
+}
+
+#codex {
+    width: 30px;
+}
+
+#codex:hover {
+    cursor: pointer;
 }
 
 #screen {
     border: solid 2px blanchedalmond;
     border-radius: 0.5rem;
-    margin: 2rem;
+    margin: 1rem;
     height: 500px;
     background-color: #333;
     position: relative;
@@ -49,10 +70,10 @@ main {
     border-radius: 0.5rem;
     margin: 1rem;
     width: fit-content;
-    padding: 1rem;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem 0;
+    gap: 0.5rem 0;
 }
 
 #waveContainer {
@@ -62,25 +83,32 @@ main {
     transform: translateX(-50%);
 }
 
+#versus {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 25%;
+}
+
 #fightContainer {
     display: flex;
     position: absolute;
-    bottom: 2rem;
-    left: 2rem;
-    right: 2rem;
+    bottom: 0.5rem;
+    left: 0.75rem;
+    gap: 0 1rem;
 }
 
 #heroContainer {
     margin-right: auto;
     border: solid 2px blanchedalmond;
     border-radius: 0.5rem;
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 #bossContainer {
     border: solid 2px blanchedalmond;
     border-radius: 0.5rem;
-    padding: 1rem;
+    padding: 0.5rem;
     margin-left: auto;
 }
 
@@ -102,10 +130,6 @@ main {
     gap: 0 2rem;
     border-radius: 0.5rem;
     padding: 0.5rem;
-    position: absolute;
-    bottom: 2rem;
-    left: 0;
-    right: 0;
 }
 
 .controllBtns {
@@ -114,9 +138,97 @@ main {
     padding: 0.5rem;
     background-color: #333;
     width: fit-content;
+    color: blanchedalmond;
 }
 
-#modal {
+.controllBtns:hover {
+    cursor: pointer;
+}
+
+#itemPocket {
+    border: solid blanchedalmond 2px;
+    border-radius: 0.5rem;
+    display: none;
+    justify-content: center;
+    gap: 0.5rem 0;
+    margin: 2rem 2rem;
+    flex-direction: column;
+}
+
+.item {
+    color: blanchedalmond;
+    padding: 0.25rem;
+    display: flex;
+    height: fit-content;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    gap: 0 0.25rem;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.item::before {
+    content: "-";
+}
+
+.item:hover {
+    cursor: pointer;
+}
+
+#codexModal {
+    display: none;
+    z-index: 1000;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: solid #333 2px;
+    border-radius: 0.5rem;
+}
+
+#codexModalContent {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+    border: solid #333 2px;
+    border-radius: 0.5rem;
+    background-color: #eee;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-transform: uppercase;
+    gap: 0 1rem;
+    font-size: 0.8rem;
+    padding: 1rem;
+    position: relative;
+}
+
+#codexClosingBtn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    border: solid #333 2px;
+    border-radius: 0.5rem;
+    padding: 0.25rem;
+    background-color: indianred;
+}
+
+#codexClosingBtn:hover {
+    cursor: pointer;
+}
+
+.codexInfosContainer {
+    border: solid #333 2px;
+    border-radius: 0.5rem;
+    height: fit-content;
+    margin-top: 2rem;
+}
+
+#lvlUpModal {
     display: none;
     z-index: 1000;
     position: absolute;
@@ -132,8 +244,8 @@ main {
     top: 15%;
     left: 50%;
     transform: translateX(-50%);
-    width: 500px;
-    height: 500px;
+    width: 310px;
+    height: 300px;
     border: solid #333 2px;
     border-radius: 0.5rem;
     background-color: #eee;
@@ -143,6 +255,7 @@ main {
     justify-content: center;
     align-items: center;
     text-transform: uppercase;
+    font-size: 0.6rem;
 }
 
 #chest:hover {
@@ -150,7 +263,7 @@ main {
 }
 
 #lvlUpCardsContainer {
-    display: flex;
+    display: none;
     gap: 0 1rem;
     justify-content: center;
     align-items: center;
@@ -161,22 +274,31 @@ main {
     border: solid #333 2px;
     border-radius: 0.5rem;
     background-color: #ffffff;
-    width: 80px;
-    height: 150px;
-    display: flex;
+    width: fit-content;
+    height: fit-content;
+    display: none;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    gap: 1rem 0;
+    padding: 0.2rem;
+}
+
+.lvlUpCards:hover {
+    cursor: pointer;
+}
+
+.lvlUpCardImg {
+    width: 40px;
+}
+
+.lvlUpCardP {
+    text-transform: uppercase;
+    font-size: 0.5rem;
 }
 
 footer {
     border-top: solid blanchedalmond 2px;
-}
-
-#versus {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 50%;
 }
 
 .barContainers {
@@ -211,4 +333,128 @@ footer {
 .nameContainers {
     display: flex;
     gap: 0 1rem;
+}
+
+@media screen and (min-width: 768px) {
+    header {
+        padding: 2rem 0;
+        font-size: 1rem;
+    }
+
+    #gameContainer {
+        width: 768px;
+        margin: 2rem 0;
+    }
+
+    #codexContainer {
+        margin: 1rem 2rem 0 auto;
+    }
+
+    #screen {
+        margin : 2rem;
+    }
+
+    #versus {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 50%;
+    }
+
+    #fightContainer {
+        display: flex;
+        position: absolute;
+        bottom: 0.5rem;
+        left: 0.5rem;
+        right: 0.5rem;
+    }
+    
+    #heroContainer {
+        margin-right: auto;
+        border: solid 2px blanchedalmond;
+        border-radius: 0.5rem;
+        padding: 1rem;
+    }
+    
+    #bossContainer {
+        border: solid 2px blanchedalmond;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-left: auto;
+    }
+
+    #lvlUpContainer {
+        position: absolute;
+        top: 15%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 500px;
+        height: 500px;
+        border: solid #333 2px;
+        border-radius: 0.5rem;
+        background-color: #eee;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-transform: uppercase;
+        font-size: 1rem;
+    }
+
+    .lvlUpCards {
+        border: solid #333 2px;
+        border-radius: 0.5rem;
+        background-color: #ffffff;
+        width: 80px;
+        height: 150px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 1rem 0;
+        font-size: 1rem;
+    }
+
+    .lvlUpCardP {
+        text-transform: uppercase;
+        font-size: 0.8rem;
+    }
+
+    #codexModalContent {
+        position: absolute;
+        top: 15%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 500px;
+        height: 500px;
+        border: solid #333 2px;
+        border-radius: 0.5rem;
+        background-color: #eee;
+        text-align: center;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        text-transform: uppercase;
+        font-size: 1rem;
+        padding: 1rem;
+    }
+
+    #itemPocket {
+        border: solid blanchedalmond 2px;
+        border-radius: 0.5rem;
+        display: none;
+        justify-content: left;
+        gap: 0.5rem 0;
+        margin: 2rem 2rem;
+        flex-direction: row;
+    }
+
+    .item {
+        padding: 0.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0 0.25rem;
+        text-transform: uppercase;
+    }
 }
