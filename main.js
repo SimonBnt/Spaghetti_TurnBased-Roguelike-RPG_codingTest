@@ -1,11 +1,18 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const titleContainer = document.getElementById("titleContainer")
+    const startGameTitle = document.getElementById("startGameTitle")
+    const gameContainer = document.getElementById("gameContainer")
+    const turnContainer = document.getElementById("turnContainer")
+    const heroTurnContainer = document.getElementById("heroTurn")
+    const bossTurnContainer = document.getElementById("bossTurn")
     const heroLifeBarContainer = document.getElementById("heroLifeBarContainer")
     const heroManaBarContainer = document.getElementById("heroManaBarContainer")
     const heroXpBarContainer = document.getElementById("heroXpBarContainer")
     const bossLifeBarContainer = document.getElementById("bossLifeBarContainer")
     const bossManaBarContainer = document.getElementById("bossManaBarContainer")
     const lvlUpModal = document.getElementById("lvlUpModal")
-    const chest = document.getElementById("chest")
+    const chest = document.getElementById("chestImg")
+    const openChest = document.getElementById("openChest")
     const codex = document.getElementById("codex")
     const codexModal = document.getElementById("codexModal")
     const codexClosingBtn = document.getElementById("codexClosingBtn")
@@ -81,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
         boots : null,
     }
 
-    console.log(inventory.equipement.sword.atk)
+    // console.log(inventory.equipement.sword.atk)
 
     let boss = {
         name : "",
@@ -138,8 +145,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
     let actualWave = 1
+    let isHeroTurn = true
+    let isBossTurn = false
 
     // -- HUD -- //
+
+    // const startGame = () => {
+    //     titleContainer.style.display = "none"
+    //     gameContainer.style.display = "block"
+    //     turnContainer.style.display = "flex"
+    // }
+
+    const heroTurn = () => {
+        turnContainer.style.display = heroTurnContainer.style.display = "block"
+        setTimeout(() => turnContainer.style.display = heroTurnContainer.style.display = "none", 3000)
+    }
+
+    const bossTurn = () => {
+        turnContainer.style.display = bossTurnContainer.style.display = "block"
+        setTimeout(() => turnContainer.style.display = bossTurnContainer.style.display = "none", 3000)
+    }
 
     const showWave = () => {
         waveContainer.innerHTML = `${actualWave}/10`
@@ -322,10 +347,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         lvlUpModal.style.display = "block"
         chest.src = "img/chest/closedChest.png"
+        console.log(chest.src)
 
         let chestIsOpenned = false
 
-        chest.addEventListener("click", () => {
+        // chest.addEventListener("click", () => {
+        openChest.addEventListener("click", () => {
             if (chestIsOpenned === false) {
                 chestIsOpenned = true
                 chest.src = "img/chest/openedChest.png"
@@ -578,20 +605,29 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // -- GAME -- //
 
-    // lvlUp(hero)
-    createBoss(hero, boss)
-    showWave()
-    showInfos()
-    createHeroBar(hero)
-    createBossBar(boss)
-    showGoldAmount(hero)
-    showSoulAmount(hero)
+    const game = () => {
+        heroTurn()
+        // bossTurn()
+        // startGameTitle.addEventListener("click", startGame)
+        // lvlUp(hero)
+        createBoss(hero, boss)
+        showWave()
+        showInfos()
+        createHeroBar(hero)
+        createBossBar(boss)
+        showGoldAmount(hero)
+        showSoulAmount(hero)
+        
+        
 
-    atkBtn.addEventListener("click", heroAtk)
-    itemBtn.addEventListener("click", openItemPocket)
-    healBtn.addEventListener("click", heroHeal)
-    codex.addEventListener("click", openCodex)
-    codexClosingBtn.addEventListener("click", closeCodex)
-    armor.addEventListener("click", openInventory)
-    inventoryClosingBtn.addEventListener("click", closeInventory)
+        atkBtn.addEventListener("click", heroAtk)
+        itemBtn.addEventListener("click", openItemPocket)
+        healBtn.addEventListener("click", heroHeal)
+        codex.addEventListener("click", openCodex)
+        codexClosingBtn.addEventListener("click", closeCodex)
+        armor.addEventListener("click", openInventory)
+        inventoryClosingBtn.addEventListener("click", closeInventory)
+    } 
+
+    game()
 })

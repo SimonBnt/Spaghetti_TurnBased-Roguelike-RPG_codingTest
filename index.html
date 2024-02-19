@@ -12,30 +12,39 @@
         <h1>Spaghetti turnBased-rogueLike-rpg coding test</h1>
     </header>
     <main>
+        <!-- <div id="titleContainer">
+            <h2 id="startGameTitle">start game</h2>
+        </div> -->
+
+        <div id="turnContainer">
+            <div id="heroTurn" class="turns">hero turn !</div>
+            <div id="bossTurn" class="turns">boss turn !</div>
+        </div>
+
         <div id="gameContainer">
             <div id="topContainer">
                 <div id="inventoryContainer">
-                    <img id="armor" src="/img/hud/armor.png" alt="">
+                    <img id="armor" src="/img/hud/armor.png" alt="inventory">
                     <p>click to open inventory</p>
                 </div>
                 <div id="codexContainer">
-                    <img id="codex" src="/img/hud/book.png" alt="">
+                    <img id="codex" src="/img/hud/book.png" alt="codex">
                     <p>click to open codex</p>
                 </div>
             </div>
             <div id="screen">
                 <div id="goldSoulContainer">
                     <div id="goldContainer">
-                        <img src="/svg/coin.svg" alt="" class="svg2">
+                        <img src="/svg/coin.svg" alt="coin" class="svg2">
                         <span id="gold"></span>
                     </div>
                     <div id="soulContainer">
-                        <img src="/svg/soul.svg" alt="" class="svg2">
+                        <img src="/svg/soul.svg" alt="soul" class="svg2">
                         <span id="soul"></span>
                     </div>
                 </div>
                 <div id="waveContainer"></div>
-                <div id="versus"><img src="/svg/vs.svg" alt="" class="svg"></div>
+                <div id="versus"><img src="/svg/vs.svg" alt="versus" class="svg"></div>
                 <div id="fightContainer">
                     <div id="heroContainer" class="mainBarContainers">
                             <div class="nameContainers">
@@ -45,7 +54,7 @@
                             <div class="barContainers" id="heroLifeBarContainer"></div>
                             <div class="barContainers" id="heroManaBarContainer"></div>
                             <div class="barContainers" id="heroXpBarContainer"></div>
-                            <div id="hero"><img src="/svg/hero.svg" alt="" class="svg"></div>
+                            <div id="hero"><img src="/svg/hero.svg" alt="hero" class="svg"></div>
                     </div>
                     <div id="bossContainer" class="mainBarContainers">
                             <div class="nameContainers">
@@ -79,6 +88,7 @@
                 </div>
             </div>
         </div>
+
         <div id="inventoryModal">
             <div id="inventoryModalContent">
                 <div id="inventoryClosingBtn">x</div>
@@ -95,6 +105,7 @@
                 </div>
             </div>
         </div>
+
         <div id="codexModal">
             <div id="codexModalContent">
                 <div id="codexClosingBtn">x</div>
@@ -112,10 +123,12 @@
                 </div>
             </div>
         </div>
+        
         <div id="lvlUpModal">
             <div id="lvlUpContainer">
                 <p>congratulation !</p>
-                <img src="" alt="" id="chest">
+                <img src="" alt="chest" id="chestImg">
+                <div id="openChest">open chest</div>
                 <div id="lvlUpCardsContainer">
                     <div class="lvlUpCards" id="lvlUpCardStat1">
                         <h3>Stat</h3>
