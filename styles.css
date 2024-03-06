@@ -5,111 +5,86 @@
 }
 
 body {
-    background-color: #222;
-
-    header {
-        text-align: center;
-        border-bottom: solid blanchedalmond 2px;
-        padding: 2rem 1rem;
-        color: blanchedalmond;
-        font-size: 0.8rem;
-    }
-
     main {
-        background-color: #555;
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
         position: relative;
-    
-        #titleContainer {
-            z-index: 1000;
+        background-color: #73bda8;
+
+        #gameplayContainer {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            border: solid #333 2px;
+            top: 2rem;
+            left: 2rem;
+            color: black;
+            z-index: 10000;
+            border: solid 4px #333;
             border-radius: 0.5rem;
-        
-            #startGameTitle {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%);
-                z-index: 1000;
-                color: #333;
+            background-color: #8df0d4;
+            width: 450px;
+            box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.4);
+
+            li {
+                list-style: none;
+                padding: 0.25rem;
                 text-transform: uppercase;
-                background-color: #eee;
-                padding: 2rem;
-                border: solid 2px #333;
-                border-radius: 0.5rem;
+                font-size: 0.6rem;
+                border: solid 1.5px #333;
+
+                li {
+                    border-radius: 0.25rem;
+                    margin: 0.25rem;
+                }
+            }
+
+            li::before {
+                content: "- ";
             }
         }
-    
-        #turnContainer {
+        
+        #gameOver {
             display: none;
+            text-transform: uppercase;
+            color: black;
             z-index: 1000;
             position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            border: solid #333 2px;
-            border-radius: 0.5rem;
-            flex-direction: column;
-            text-transform: uppercase;
-    
-            .turns {
-                display: none;
-                position: absolute;
-                top: 50%;
-                color: white;
-                font-size: 1.5rem;
-                padding: 0.25rem;
-            }
-            
-            #heroTurn {
-                animation: heroTurnAnimation 2s forwards;
-                border-bottom: solid white 2px;
-                border-right: solid white 2px;
-                border-bottom-right-radius: 0.5rem;
-            }
-            
-            #bossTurn {
-                animation: bossTurnAnimation 2s forwards;
-                border-bottom: solid white 2px;
-                border-left: solid white 2px;
-                border-bottom-left-radius: 0.5rem;
-            }
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%);
+            font-size: 1.25rem;
         }
     
         #gameContainer {
-            /* display: none; */
-            background-color: #444;
-            border: solid 2px blanchedalmond;
-            border-radius: 0.5rem;
+            border: solid 4px #333;
+            color: black;
+            border-radius: 0.25rem;
             min-width: 320px;
-            max-width: 768px;
             height: fit-content;
-            margin: 2rem 1rem;
+            margin: 2rem 0rem;
+            position: relative;
+            box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.4);
+
+            h1 {
+                position: absolute;
+                top: -1.5rem;
+                padding: 0 1rem;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: #73bda8;
+            }
     
             #topContainer {
-                background-color: #444;
-                border: solid 2px blanchedalmond;
-                border-radius: 0.5rem;
                 margin: 1rem;
                 display: flex;
                 justify-content: center;
                 align-items: center;
     
                 #inventoryContainer {
-                    border: solid blanchedalmond 2px;
-                    border-radius: 0.5rem;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     width: fit-content;
-                    padding: 0.5rem;
                     gap: 0.5rem 0;
                     margin: 1rem auto 1rem 1rem;
                     font-size: 0.8rem;
@@ -117,14 +92,11 @@ body {
                 }
                 
                 #codexContainer {
-                    border: solid blanchedalmond 2px;
-                    border-radius: 0.5rem;
                     display: flex;
                     flex-direction: column;
                     align-items: center;
                     text-align: center;
                     width: fit-content;
-                    padding: 0.5rem;
                     gap: 0.5rem 0;
                     font-size: 0.8rem;
                     margin: auto 1rem 1rem 1rem;
@@ -136,35 +108,64 @@ body {
             }
     
             #screen {
-                border: solid 2px blanchedalmond;
-                border-radius: 0.5rem;
-                margin: 1rem;
-                height: 500px;
-                background-color: #333;
+                border: solid 4px #333;
+                border-radius: 0.25rem;
+                margin: 0.5rem;
+                height: 400px;
                 position: relative;
-                color: blanchedalmond;
-            
-                #goldSoulContainer {
-                    border: solid 2px blanchedalmond;
-                    border-radius: 0.5rem;
-                    margin: 1rem;
-                    width: fit-content;
-                    padding: 0.5rem;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.5rem 0;
-    
-                    .svg2 {
-                        width: 20px;
+                color: black;
+                overflow-x: hidden;
+
+                #turnContainer {
+                    display: none;
+                    z-index: 1000;
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    text-transform: uppercase;
+                    
+                    .turns {
+                        display: none;
+                        position: absolute;
+                        top: 45%;
+                        padding: 0.25rem;
+                        font-size: 0.8rem;
+                    }
+                    
+                    #heroTurn {
+                        animation: heroTurnAnimation 2s forwards;
+                        border-bottom: solid black 2px;
+                        border-right: solid black 2px;
+                        border-bottom-right-radius: 0.5rem;
+                    }
+                    
+                    #bossTurn {
+                        animation: bossTurnAnimation 2s forwards;
+                        border-bottom: solid black 2px;
+                        border-left: solid black 2px;
+                        border-bottom-left-radius: 0.5rem;
                     }
                 }
             
-                #waveContainer {
-                    position: absolute;
-                    top: 1rem;
-                    left: 50%;
-                    transform: translateX(-50%);
+                #goldSoulContainer {
+                    padding: 1rem;
+                    width: fit-content;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    gap: 0.5rem 0;
+
+                    .goldSould {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 0 0.25rem;
+                    }
                 }
+/*             
+                #waveContainer {
+                } */
             
                 #versus {
                     position: absolute;
@@ -172,114 +173,179 @@ body {
                     transform: translateX(-50%);
                     top: 25%;
                 }
+                
+                .mainBarContainers {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    gap: 0.3rem 0;
+                    
+                    .barContainer {
+                        position: relative;
 
-                .svg {
-                    width: 80px;
-                    margin-top: 1rem;
+                        .barInfos {
+                            position: absolute;
+                            left: -2rem;
+                            top: 50%;
+                            transform: translateY(-50%);
+                        }
+
+                        .barBackground {
+                            height: 8px;
+                            background-color: #555;
+                            width: 80px;
+                            position: relative;
+                            
+                            .bar {
+                                height: 8px;
+                            }
+                        }
+                    }
+                
+                    .nameContainers {
+                        display: flex;
+                        gap: 0 0.5rem;
+                    }
+
+                    .caracterImg {
+                        position: relative;
+                        z-index: 1000;
+
+                        .caracterShadow {
+                            position: absolute;
+                            bottom: -0.25rem;
+                            left: 50%;
+                            transform: translate(-50%);
+                            background-color: rgba(0, 0, 0, 0.4);
+                            border-radius: 100%;
+                            width: 80px;
+                            height: 20px;
+                            z-index: -100;
+                            border: solid 1px #333;
+                        }
+                    }
+                }
+
+                #heroContainer {
+                    border-radius: 0.25rem;
+                    padding: 0.5rem;
+                    margin-right: auto;
+                    margin-left: 1rem;
+                    position: absolute;
+                    bottom: 1rem;
+                    left: 1rem;
+
+                    .heroAtkAnimation {
+                        animation: heroAtk 0.3s forwards;
+                    }
+
+                    #heroImg {
+                        width: 64px;
+                    }
                 }
                 
-                #fightContainer {
-                    display: flex;
+                #bossContainer {
+                    border-radius: 0.25rem;
+                    padding: 0.5rem;
+                    margin-right: 1rem;
                     position: absolute;
-                    bottom: 0.5rem;
-                    left: 0.75rem;
-                    gap: 0 1rem;
+                    top: 1rem;
+                    right: 1rem;
 
-                    .bar {
-                        border-radius: 0.5rem;
-                        height: 10px;
-                    }
-    
-                    .mainBarContainers {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        flex-direction: column;
-                        gap: 0.5rem 0;
-                    
-                        .barContainers {
-                            height: 10px;
-                            border: solid 1px white;
-                            border-radius: 0.5rem;
-                            width: 100px;
+                    #boss {
+                        position: relative;
+
+                        #bossChestImgContainer {
+                            display: none;
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            width: 32px;
                         }
-                    
-                        .nameContainers {
+                    }
+
+                    .bossAtkAnimation {
+                        animation: bossAtk 0.3s forwards;
+                    }
+                }
+
+                .controllerContainerItems {
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                    height: 150px;
+                    width: 100px;
+                }
+
+                #controllerContainer {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    border-top: solid 4px #333;
+                    border-left: solid 4px #333;
+                    border-top-left-radius: 0.25rem;
+                
+                    .controllBtns {
+                        padding: 0.5rem;
+                        text-transform: uppercase;
+                        width: fit-content;
+                        position: relative;
+                        border-radius: 0.25rem;
+            
+                        .arrows {
+                            display: none;
+                            position: absolute;
+                            left: -40%;
+                            top: 50%;
+                            transform: translateY(-50%);
+                        }
+                    }
+                }
+
+                #bag {
+                    display: none;
+                    justify-content: center;
+                    gap: 0.5rem 0;
+                    flex-direction: column;
+
+                    #bagItemContainer {
+                        position: relative;
+
+                        .item {
+                            padding: 0.25rem;
                             display: flex;
-                            gap: 0 1rem;
+                            height: fit-content;
+                            width: fit-content;
+                            justify-content: center;
+                            align-items: center;
+                            gap: 0 0.25rem;
+                            text-transform: uppercase;
+                            font-size: 0.8rem;
                         }
-                    }
-            
-                    #heroContainer {
-                        margin-right: auto;
-                        border: solid 2px blanchedalmond;
-                        border-radius: 0.5rem;
-                        padding: 0.5rem;
-                    }
-            
-                    #bossContainer {
-                        border: solid 2px blanchedalmond;
-                        border-radius: 0.5rem;
-                        padding: 0.5rem;
-                        margin-left: auto;
+        
+                        .item::before {
+                            content: "-";
+                        }
+
+                        #bagCloser {
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                        }
                     }
                 }
             }
     
             #gameStateContainer {
-                background-color: #333;
-                border: solid 2px blanchedalmond;
-                border-radius: 0.5rem;
-                margin: 2rem;
+                border: solid 4px #333;
+                border-radius: 0.25rem;
+                margin: 0.5rem;
                 height: 100px;
                 text-align: left;
                 padding: 1rem;
-                color: blanchedalmond;
-            }
-    
-            #controllerContainer {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 0 2rem;
-                border-radius: 0.5rem;
-                padding: 0.5rem;
-            
-                .controllBtns {
-                    border: solid 2px blanchedalmond;
-                    border-radius: 0.5rem;
-                    padding: 0.5rem;
-                    background-color: #333;
-                    width: fit-content;
-                    color: blanchedalmond;
-                }
-            }
-            
-            #itemPocket {
-                border: solid blanchedalmond 2px;
-                border-radius: 0.5rem;
-                display: none;
-                justify-content: center;
-                gap: 0.5rem 0;
-                margin: 2rem 2rem;
-                flex-direction: column;
-            
-                .item {
-                    color: blanchedalmond;
-                    padding: 0.25rem;
-                    display: flex;
-                    height: fit-content;
-                    width: fit-content;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 0 0.25rem;
-                    text-transform: uppercase;
-                    font-size: 0.8rem;
-            
-                    & .item::before {
-                        content: "-";
-                    }
-                }
+                color: #eee;
             }
         }
     
@@ -291,7 +357,7 @@ body {
             height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
             border: solid #333 2px;
-            border-radius: 0.5rem;
+            border-radius: 0.25rem;
         
             #inventoryModalContent {
                 position: absolute;
@@ -301,7 +367,7 @@ body {
                 width: 300px;
                 height: fit-content;
                 border: solid #333 2px;
-                border-radius: 0.5rem;
+                border-radius: 0.25rem;
                 background-color: #eee;
                 font-size: 0.8rem;
                 text-transform: uppercase;
@@ -314,14 +380,14 @@ body {
                     top: 0.5rem;
                     right: 0.5rem;
                     border: solid #333 2px;
-                    border-radius: 0.5rem;
+                    border-radius: 0.25rem;
                     padding: 0.25rem;
                     background-color: indianred;
                 }
         
                 #armorSetContainer {
                     border: solid #333 2px;
-                    border-radius: 0.5rem;
+                    border-radius: 0.25rem;
                     padding: 0.5rem;
                     background-color: #333;
                     display: grid;
@@ -388,7 +454,7 @@ body {
                     
                     .armorPieces {
                         border: solid #333 2px;
-                        border-radius: 0.5rem;
+                        border-radius: 0.25rem;
                         padding: 0.25rem;
                         background-color: #eee;
                     }
@@ -404,7 +470,7 @@ body {
             height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
             border: solid #333 2px;
-            border-radius: 0.5rem;
+            border-radius: 0.25rem;
         
             #codexModalContent {
                 position: absolute;
@@ -414,7 +480,7 @@ body {
                 width: 300px;
                 height: 300px;
                 border: solid #333 2px;
-                border-radius: 0.5rem;
+                border-radius: 0.25rem;
                 background-color: #eee;
                 text-align: center;
                 display: grid;
@@ -430,21 +496,21 @@ body {
                     top: 0.5rem;
                     right: 0.5rem;
                     border: solid #333 2px;
-                    border-radius: 0.5rem;
+                    border-radius: 0.25rem;
                     padding: 0.25rem;
                     background-color: indianred;
         
                     .codexInfosContainer {
                         border: solid #333 2px;
-                        border-radius: 0.5rem;
+                        border-radius: 0.25rem;
                         height: fit-content;
                         margin-top: 2rem;
                     }
                 }
             }
         }
-    
-        #lvlUpModal {
+
+        #chestModal {
             display: none;
             z-index: 1000;
             position: absolute;
@@ -452,32 +518,79 @@ body {
             height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
             border: solid #333 2px;
-            border-radius: 0.5rem;
-        
-            #lvlUpContainer {
+            border-radius: 0.25rem;
+
+            #chestModalContainer {
                 position: absolute;
-                top: 15%;
+                top: 50%;
                 left: 50%;
-                transform: translateX(-50%);
+                transform: translate(-50%);
                 width: 310px;
                 border: solid #333 2px;
-                border-radius: 0.5rem;
+                border-radius: 0.25rem;
                 background-color: #eee;
                 text-align: center;
                 text-transform: uppercase;
                 font-size: 0.6rem;
                 display: grid;
-                grid-template-columns: 1fr;
-                grid-template-rows: repeat(4, 0.5fr);
+                justify-items: center;
+                align-items: center;
+                padding: 1rem;
+
+                #earnedGoldFromChestContainer {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    #earnedGoldFromChestImg {
+                        display: none;
+                    }
+                }
+            }
+        }
+    
+        /* #lvlUpModal {
+            display: none;
+            z-index: 1000;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            border: solid #333 2px;
+            border-radius: 0.25rem;
+        
+            #lvlUpContainer {
+                position: absolute;
+                top: 25%;
+                left: 50%;
+                transform: translate(-50%);
+                width: 310px;
+                border: solid #333 2px;
+                border-radius: 0.25rem;
+                background-color: #eee;
+                text-align: center;
+                text-transform: uppercase;
+                font-size: 0.6rem;
+                display: grid;
                 justify-items: center;
                 align-items: center;
                 padding: 1rem;
         
                 #openChest {
                     border: solid #333 2px;
-                    border-radius: 0.5rem;
+                    border-radius: 0.25rem;
                     padding: 0.5rem;
                     background-color: #ffffff;
+                }
+
+                #lvlUpEarnedGoldMainContainer {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    #lvlUpEarnedGoldImg {
+                        display: none;
+                    }
                 }
         
                 #lvlUpCardsContainer {
@@ -490,7 +603,7 @@ body {
         
                     .lvlUpCards {
                         border: solid #333 2px;
-                        border-radius: 0.5rem;
+                        border-radius: 0.25rem;
                         background-color: #ffffff;
                         width: fit-content;
                         height: fit-content;
@@ -512,20 +625,15 @@ body {
                     }
                 }
             }
-        }
-    }
-    
-    footer {
-        border-top: solid blanchedalmond 2px;
+        } */
     }
 }
 
 /* ---- MEDIA QUERY ---- */
 
 @media screen and (min-width: 768px) {
-    header {
-        padding: 2rem 0;
-        font-size: 1rem;
+    main {
+        height: 100dvh;
     }
 
     #gameContainer {
@@ -570,9 +678,17 @@ body {
     }
 
     #screen {
-        margin : 2rem;
+        margin : 2rem !important;
+        
+        .turns {
+            font-size: 1.5rem !important;
+        }
     }
-
+    
+    #gameStateContainer {
+        margin : 2rem !important;
+    }
+    
     #versus {
         position: absolute;
         left: 50%;
@@ -583,9 +699,6 @@ body {
     #fightContainer {
         display: flex;
         position: absolute;
-        bottom: 0.5rem;
-        left: 0.5rem;
-        right: 0.5rem;
     }
     
     #lvlUpContainer {
@@ -612,13 +725,6 @@ body {
         font-size: 1rem;
     }
 
-    #itemPocket {
-        justify-content: left;
-        gap: 0.5rem 0;
-        margin: 2rem 2rem;
-        flex-direction: row;
-    }
-
     .item {
         padding: 0.5rem;
     }
@@ -630,6 +736,7 @@ body {
     from {
         left: -100%;
     }
+
     to {
         left: 50%;
         transform: translate(-50%);
@@ -640,8 +747,37 @@ body {
     from {
         right : -100%;
     }
+
     to {
         right : 50%;
         transform: translate(50%);
+    }
+}
+
+@keyframes heroAtk {
+    0%{
+        transform : translateX(0)
+    } 
+
+    50% {
+        transform : translateX(20px)
+    } 
+
+    100% {
+        transform : translateX(0)
+    }
+}
+
+@keyframes bossAtk {
+    0%{
+        transform : translateX(0)
+    } 
+
+    50% {
+        transform : translateX(-20px)
+    } 
+
+    100% {
+        transform : translateX(0)
     }
 }

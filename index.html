@@ -4,24 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test RPG spaghetti</title>
+    <!-- <script src="test.js"></script> -->
     <script src="main.js"></script>
+    <!-- <script src="new.js"></script> -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Spaghetti turnBased-rogueLike-rpg coding test</h1>
-    </header>
     <main>
-        <!-- <div id="titleContainer">
-            <h2 id="startGameTitle">start game</h2>
-        </div> -->
+        <div id="gameplayContainer">
+            <ul>
+                <li>Titre : <ul>
+                    <li>Fiendish Finds</li>
+                    <li>Monster Hunter Haul</li>
+                    <li>Hunter Haul</li>
+                    <li>Beast Bazaar</li>
+                    <li>Poacher Prey</li>
+                </ul></li>
+                <li>Roguelike turn based rpg</li>
+                <li>Choose your class and start your adventure</li>
+                <li>You are property of "The Guild", go to an expedition and collect "monster materials". sell them to reach quota. if you don't reach the "quota", then you die and start from the begining</li>
+                <li>kill monsters to collect "monster materials" and sell them to "The Guild" to reach "quota"</li>
+                <li>If you reach the quota, then you have completed an expedition. And you have a new quota to reach and so on.</li>
+                <li>10 days to sell "monsters materials" to "the guild" and reach quota</li>
+                <li>Quota to reach before day 0 is elapsed => if (day = 0) => {last day to sell}. You can play the day 0 before selling but day 0 monster is a boss</li>
+                <li>Each day, "monster materials" value % goes up until it reach 100% on day 0. more you wait and more you will earn "Guild coin"</li>
+                <li>current quota upgrade everytime last quota is reached => first quota = 100; 2nd quota = 200 and so on</li>
+                <li>each day is a fight where player can defeat monster, be k.o, flee and obtain "monsters materials" to sell. And some other useful and usable items during a fight (no value). </li>
+                <li>Between each day, there is either a passive event where you will have to accept the consequences. Either an event where you will have to make a choice, be careful it can be fatal. </li>
+                <li>each monster defeated => xp, gold, soul, "monsters materials", items and a chance to win a chest full of reward.</li>
+                <li>If you are knocked out during a fight, the current day automatically ends and moves on to the next one. you also lose half of your collected “monster materials”, gold and soul. </li>
+                <li>complete an expedition to obtain medal and other rewards</li>
+                <li>you start with a few gold</li>
 
-        <div id="turnContainer">
-            <div id="heroTurn" class="turns">hero turn !</div>
-            <div id="bossTurn" class="turns">boss turn !</div>
+                <li>What is it for : <ul>
+                    <li>"monster materails" => sell to "the guild" to reach "quota" and complete an expedition</li>
+                    <li>medals => allows you to unlock new items found during expeditions, new rewards and improvements.</li>
+                    <li>guild coin => buy usefull and powerfull items to the guild shop</li>
+                    <li>gold => buy basic items to the market</li>
+                    <li>xp => lvl up and be stronger</li>
+                    <li>soul => use it to permanently improve your hero</li>
+                    <li>chest => random reward + gold</li>
+                </ul></li>
+            </ul>
         </div>
-
         <div id="gameContainer">
+            <h1>Fiendish Finds</h1>
+            <div id="gameOver">game over</div>
             <div id="topContainer">
                 <div id="inventoryContainer">
                     <img id="armor" src="/img/hud/armor.png" alt="inventory">
@@ -33,60 +61,89 @@
                 </div>
             </div>
             <div id="screen">
+                <div id="turnContainer">
+                    <div id="heroTurn" class="turns">hero turn !</div>
+                    <div id="bossTurn" class="turns">boss turn !</div>
+                </div>
                 <div id="goldSoulContainer">
-                    <div id="goldContainer">
-                        <img src="/svg/coin.svg" alt="coin" class="svg2">
-                        <span id="gold"></span>
+                    <div id="waveContainer"></div>
+                    <div id="goldContainer" class="goldSould">
+                        <img src="/img/coin/sprite_0.png" alt="coin" id="coinImg">
+                        <span id="goldAmount"></span>
                     </div>
-                    <div id="soulContainer">
-                        <img src="/svg/soul.svg" alt="soul" class="svg2">
-                        <span id="soul"></span>
+                    <div id="soulContainer" class="goldSould">
+                        <img src="" alt="soul" class="goldSoulImg" id="soulImg">
+                        <span id="soulAmount"></span>
                     </div>
                 </div>
-                <div id="waveContainer"></div>
-                <div id="versus"><img src="/svg/vs.svg" alt="versus" class="svg"></div>
-                <div id="fightContainer">
-                    <div id="heroContainer" class="mainBarContainers">
-                            <div class="nameContainers">
-                                <div id="heroName"></div>
-                                <div id="heroLvl"></div>
-                            </div>
-                            <div class="barContainers" id="heroLifeBarContainer"></div>
-                            <div class="barContainers" id="heroManaBarContainer"></div>
-                            <div class="barContainers" id="heroXpBarContainer"></div>
-                            <div id="hero"><img src="/svg/hero.svg" alt="hero" class="svg"></div>
+                <div id="heroContainer" class="mainBarContainers">
+                    <div class="nameContainers">
+                        <div id="heroName"></div>
+                        <div id="heroLvl"></div>
                     </div>
-                    <div id="bossContainer" class="mainBarContainers">
-                            <div class="nameContainers">
-                                <div id="bossName"></div>
-                                <div id="bossLvl"></div>
-                            </div>
-                            <div class="barContainers" id="bossLifeBarContainer"></div>
-                            <div class="barContainers" id="bossManaBarContainer"></div>
-                            <div id="boss"><img id="bossImg" src="" alt="monster" class="svg"></div>
+                    <div class="barContainer">
+                        <div class="barInfos">hp :</div>
+                        <div class="barBackground" id="heroLifeBarContainer">
+                        </div>
+                    </div>
+                    <div class="barContainer">
+                        <div class="barInfos">mp :</div>
+                        <div class="barBackground" id="heroManaBarContainer">
+                    </div>
+                    </div>
+                    <div class="barContainer">
+                        <div class="barInfos">xp :</div>
+                        <div class="barBackground" id="heroXpBarContainer">
+                    </div>
+                    </div>
+                    <div id="hero" class="caracterImg">
+                        <img id="heroImg" src="/img/hero/wizard.png" alt="hero" class="svg">
+                        <div class="caracterShadow"></div>
+                    </div>
+                </div>
+                <div id="bossContainer" class="mainBarContainers">
+                    <div class="nameContainers">
+                        <div id="bossName"></div>
+                        <div id="bossLvl"></div>
+                    </div>
+                    <div class="barContainer">
+                        <div class="barInfos">hp :</div>
+                        <div class="barBackground" id="bossLifeBarContainer"></div>
+                    </div>
+                    <div class="barContainer">
+                        <div class="barInfos">mp :</div>
+                        <div class="barBackground" id="bossManaBarContainer"></div>
+                    </div>
+                    <div id="boss" class="caracterImg">
+                        <img id="bossImg" src="" alt="monster" class="svg">
+                        <img id="bossChestImgContainer" src="" alt="">
+                        <div class="caracterShadow"></div>
+                    </div>
+                </div>
+                <div id="controllerContainer" class="controllerContainerItems">
+                    <div id="atkBtn" class="controllBtns showArrow">Atk</div>
+                    <div id="itemBtn" class="controllBtns showArrow">Item</div>
+                    <div id="healBtn" class="controllBtns showArrow">Heal</div>
+                </div>
+                <div id="bag" class="controllerContainerItems">
+                    <div id="bagItemContainer">
+                        <div id="bagCloser">x</div>
+                        <div class="item">
+                            <p>potion</p>
+                        </div>
+                        <div class="item">
+                            <p>bandage</p>
+                        </div>
+                        <div class="item">
+                            <p>mana potion</p>
+                        </div>
+                        <div class="item">
+                            <p>throwing knives</p>
+                        </div>
                     </div>
                 </div>
             </div>
             <div id="gameStateContainer"></div>
-            <div id="controllerContainer">
-                <div id="atkBtn" class="controllBtns">Atack</div>
-                <div id="itemBtn" class="controllBtns">Item</div>
-                <div id="healBtn" class="controllBtns">Heal</div>
-            </div>
-            <div id="itemPocket">
-                <div class="item">
-                    <p>potion</p>
-                </div>
-                <div class="item">
-                    <p>bandage</p>
-                </div>
-                <div class="item">
-                    <p>mana potion</p>
-                </div>
-                <div class="item">
-                    <p>throwing knives</p>
-                </div>
-            </div>
         </div>
 
         <div id="inventoryModal">
@@ -123,12 +180,26 @@
                 </div>
             </div>
         </div>
+
+        <div id="chestModal">
+            <div id="chestModalContainer">
+                <img src="" alt="chest" id="chestImg">
+                <div id="earnedGoldFromChestContainer">
+                    <div id="earnedGoldFromChest"></div>
+                    <img src="img/coin/coin.png" alt="coin" id="earnedGoldFromChestImg">
+                </div>
+            </div>
+        </div>
         
-        <div id="lvlUpModal">
+        <!-- <div id="lvlUpModal">
             <div id="lvlUpContainer">
                 <p>congratulation !</p>
                 <img src="" alt="chest" id="chestImg">
                 <div id="openChest">open chest</div>
+                <div id="lvlUpEarnedGoldMainContainer">
+                    <div id="lvlUpEarnedGoldContainer"></div>
+                    <img src="img/coin/coin.png" alt="coin" id="lvlUpEarnedGoldImg">
+                </div>
                 <div id="lvlUpCardsContainer">
                     <div class="lvlUpCards" id="lvlUpCardStat1">
                         <h3>Stat</h3>
@@ -144,8 +215,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </main>
-    <footer></footer>
 </body>
 </html>
