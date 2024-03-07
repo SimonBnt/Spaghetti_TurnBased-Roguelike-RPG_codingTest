@@ -505,29 +505,6 @@ document.addEventListener("DOMContentLoaded", function () {
         createBossBar(boss)
     }
 
-    const heroAtk = () => {
-        let delay = 1000
-        heroImg.classList.add("heroAtkAnimation")
-        let damage = (hero.atk + equipedEquipement.rightArm.atk)
-    
-        if (boss.hp > 0) {
-            // Simulate boss losing life unit by unit decrementally
-            for (let i = 0; i < damage; i++) {
-                setTimeout(() => {
-                    boss.hp--
-                    updateBossBars()
-                }, (damage - i) * 50) // Adjust the timeout delay as needed
-            }
-    
-            let message = `${hero.name} attacks and deals ${damage} damage to ${boss.name}!`
-            displayMessage(message, () => {})
-        }
-    
-        setTimeout(() => {
-            heroImg.classList.remove("heroAtkAnimation")
-        }, delay)
-    }
-
     const openCodex = () => {
         codexModal.style.display = "flex"
     }
@@ -544,27 +521,58 @@ document.addEventListener("DOMContentLoaded", function () {
         inventoryModal.style.display = "none"
     }
 
+    const atkAnimation = (image) => {
+        const bossHitAnimation = () => {
+            image.classList.add("hitAnimation")
+            setTimeout(() => {
+                image.classList.remove("hitAnimation")
+            }, 20)
+        }
+        
+        const executeBossHitAnimations = () => {
+            const totalAnimations = 3
+            
+            const animate = (count) => {
+                if (count > 0) {
+                    bossHitAnimation()
+                    const delay = 150
+
+                    setTimeout(() => {
+                        animate(count - 1)
+                    }, delay)
+                }
+            }
+            animate(totalAnimations)
+        }
+        executeBossHitAnimations()
+    }
+
     // -- FIGHT LOGIC -- //
 
-    // const heroAtk = () => {
-    //     let delay = 1000
-    //     heroImg.classList.add("heroAtkAnimation")
-    //     let damage = (hero.atk + equipedEquipement.rightArm.atk)
+    const heroAtk = () => {
+        let delay = 1000
+        heroImg.classList.add("heroAtkAnimation")
+        let damage = (hero.atk + equipedEquipement.rightArm.atk)
     
-    //     if (boss.hp > 0) {
-    //         boss.hp -= damage
-    
-    //         let message = `${hero.name} attacks and deals ${damage} damage to ${boss.name}!`
-            
-    //         updateBossBars()
+        if (boss.hp > 0) {
+            atkAnimation(bossImg)
 
-    //         displayMessage(message, () => {})
-    //     } 
-        
-    //     setTimeout(() => {
-    //         heroImg.classList.remove("heroAtkAnimation")
-    //     }, delay)
-    // }
+            // Simulate boss losing life unit by unit decrementally
+            for (let i = 0; i < damage; i++) {
+                setTimeout(() => {
+                    boss.hp--
+                    updateBossBars()
+                }, (damage - i) * 50) // Adjust the timeout delay as needed
+            }
+    
+            let message = `${hero.name} attacks and deals ${damage} damage to ${boss.name}!`
+            displayMessage(message, () => {})
+        }
+    
+        setTimeout(() => {
+            heroImg.classList.remove("heroAtkAnimation")
+        }, delay)
+    }
 
     const heroHeal = () => {
         let heal = (10 * hero.int)
@@ -891,6 +899,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let damage = boss.atk
 
         if (hero.hp > 0) {
+            atkAnimation(heroImg)
+
             for (let i = 0; i < damage; i++) {
                 setTimeout(() => {
                     hero.hp--

@@ -242,6 +242,10 @@ body {
                             border: solid 1px #333;
                         }
                     }
+
+                    .hitAnimation {
+                        opacity: 0;
+                    }
                 }
 
                 #heroContainer {
