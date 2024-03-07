@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const coinImg = document.getElementById("coinImg")
     const soulAmount = document.getElementById("soulAmount")
     const soulImg = document.getElementById("soulImg")
+    const guildCoinAmount = document.getElementById("guildCoinAmount")
+    const guildCoinImg = document.getElementById("guildCoinImg")
 
     const heroImg = document.getElementById("heroImg")
     const heroName = document.getElementById("heroName")
@@ -68,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
         lvl : 1,
         coinInPocket : 0,
         soulInPocket : 0,
+        guildCoinInPocket : 0,
         weight : 0,
         maxWeight : 100,
 
@@ -356,6 +359,16 @@ document.addEventListener("DOMContentLoaded", function () {
         }, delay)
     }
 
+    const showHud = () => {
+        showWave()
+        showInfos()
+        createHeroBar(hero)
+        createBossBar(boss)
+        showGoldAmount(hero)
+        showSoulAmount(hero)
+        showGuildCoinAmount(hero)
+    }
+
     const showWave = () => {
         waveContainer.innerHTML = `${actualWave}/10`
     }
@@ -415,6 +428,29 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     
         setInterval(soulAnimation, 100)
+    }
+
+    const showGuildCoinAmount = (hero) => {
+        guildCoinAmount.innerHTML = hero.guildCoinInPocket
+
+        // let guildCoinImgSources = [
+        //     "/img/guildCoin/sprite_0.png",
+        //     "/img/guildCoin/sprite_1.png",
+        //     "/img/guildCoin/sprite_2.png",
+        //     "/img/guildCoin/sprite_3.png",
+        //     "/img/guildCoin/sprite_4.png",
+        //     "/img/guildCoin/sprite_5.png",
+        // ]
+
+        // let currentIndex = 0
+
+        // function guildCoinAnimation() {
+        //     currentIndex = (currentIndex + 1) % guildCoinImgSources.length
+        //     const nextImg = guildCoinImgSources[currentIndex]
+        //     guildCoinImg.src = nextImg
+        // }
+    
+        // setInterval(guildCoinAnimation, 100)
     }
 
     const getColorByRatio = (ratio) => {
@@ -876,12 +912,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const game = () => {
         createBoss(hero, boss)
-        showWave()
-        showInfos()
-        createHeroBar(hero)
-        createBossBar(boss)
-        showGoldAmount(hero)
-        showSoulAmount(hero)
+        showHud()
 
         const heroTurn = async () => {
             let canPerformNextTurn = false
