@@ -11,6 +11,7 @@
 </head>
 <body>
     <main>
+        <div id="gameplayOpenerBtn">open rules</div>
         <div id="gameplayContainer">
             <ul>
                 <li>Titre : <ul>
@@ -49,7 +50,6 @@
         </div>
         <div id="gameContainer">
             <h1>Fiendish Finds</h1>
-            <div id="gameOver">game over</div>
             <div id="topContainer">
                 <div id="inventoryContainer">
                     <img id="armor" src="/img/hud/armor.png" alt="inventory">
@@ -59,25 +59,74 @@
                     <img id="codex" src="/img/hud/book.png" alt="codex">
                     <p>click to open codex</p>
                 </div>
+                <div id="dayContainer">
+                    <div id="dayContainerTopContent">
+                        <div id="quotaContent">
+                            <img src="/img/hud/bone.png" alt="monsterMaterialsValue" class="monsterMaterialsImg">
+                            <div id="quotaContainer"></div>
+                        </div>
+                    </div>
+                    <div id="dayContent">
+                        <div class="eventPosition">e</div>
+                        <div class="day" id="dayOne">
+                            <h3>jour 1</h3>
+                            <img src="/img/hud/skull.png" alt="skull" class="fight">
+                            <img src="/img/hud/skull.png" alt="skull" class="fight">
+                            <img src="/img/hud/skull.png" alt="skull" class="fight">
+                        </div>
+                        <div class="eventPosition">e</div>
+                        <div class="day" id="dayTwo">
+                            <h3>jour 2</h3>
+                            <img src="/img/hud/skull.png" alt="skull" class="fight">
+                            <img src="/img/hud/skull.png" alt="skull" class="fight">
+                            <img src="/img/hud/skull.png" alt="skull" class="fight">
+                        </div>
+                        <div class="eventPosition">e</div>
+                        <div class="day" id="dayThree">
+                            <h3>jour 3</h3>
+                            <img src="/img/hud/skull.png" alt="skull" class="fight">
+                            <img src="/img/hud/skull.png" alt="skull" class="fight">
+                            <img src="/img/hud/skull.png" alt="skull" class="fight">
+                        </div>
+                        <div class="eventPosition">e</div>
+                        <div id="quotaDay" class="eventPosition" id="balance">?</div>
+                    </div>
+                </div>
             </div>
-            <div id="waveContainer"></div>
+            <!-- <div id="waveContainer"></div> -->
             <div id="screen">
+                <div id="eventContainer">
+                    <div id="eventModalContent">
+                        <div id="eventText"></div>
+                        <div class="eventOptionText"></div>
+                        <div class="eventOptionText"></div>
+                    </div>
+                </div>
+                <div id="fightState"></div>
                 <div id="turnContainer">
                     <div id="heroTurn" class="turns">hero turn !</div>
                     <div id="bossTurn" class="turns">boss turn !</div>
                 </div>
-                <div id="goldSoulContainer">
-                    <div id="goldContainer" class="goldSould">
-                        <img src="/img/coin/sprite_0.png" alt="coin" id="coinImg">
+                <div id="bankContainer">
+                    <div id="goldContainer" class="bankItem">
+                        <img src="/img/coin/gold/coin.png" alt="coin" class="bankItemImg" id="coinImg">
                         <span id="goldAmount"></span>
+                        <div class="earnedCurrencyAmount" id="earnedGold"></div>
                     </div>
-                    <div id="soulContainer" class="goldSould">
-                        <img src="" alt="soul" class="goldSoulImg" id="soulImg">
+                    <div id="soulContainer" class="bankItem">
+                        <img src="/img/soul/sprite_0.png" alt="soul" class="bankItemImg" id="soulImg">
                         <span id="soulAmount"></span>
+                        <div class="earnedCurrencyAmount" id="earnedSoul"></div>
                     </div>
-                    <div id="guildCoinContainer" class="goldSould">
-                        <img src="/svg/coin.svg" alt="guild coin" class="goldSoulImg" id="guildCoinImg">
+                    <div id="guildCoinContainer" class="bankItem">
+                        <img src="img/coin/guildCoin/guildCoinBag.png" alt="guild coin" class="bankItemImg" id="guildCoinImg">
                         <span id="guildCoinAmount"></span>
+                        <div id="earnedGuildCoin"></div>
+                    </div>
+                    <div id="monsterMaterialsContainer" class="bankItem">
+                        <img src="/img/hud/bone.png" alt="monsterMaterialsValue" class="monsterMaterialsImg">
+                        <div id="monsterMaterialsAmount"></div>
+                        <div class="earnedCurrencyAmount" id="earnedMonsterMaterials"></div>
                     </div>
                 </div>
                 <div id="heroContainer" class="mainBarContainers">
@@ -220,6 +269,87 @@
                 </div>
             </div>
         </div> -->
+        <div id="todoOpenerBtn">open todo</div>
+
+        <div id="todo">
+            *modifier les regles
+            <ul>
+                <h3>Avant expedition</h3>
+                <li>acces lobby interface</li>
+                <li>marchand</li>
+                <li>armurerie</li>
+                <li>Arbre de talent</li>
+                <li>guild => contrat spé (monstre a battre, objet a trouver etc) + boutique de guild</li>
+                <li>banque</li>
+                <li>choix du mercennaire (class => each = arbre de talent + lvl + spec)</li>
+            </ul>                     
+            <ul>
+                <h3>Avant combat</h3>
+                <li>Event => afficher eventModal => evenement aléatoire + text => faire un choix parmis 3 => concequence sur joueur ou combat sinon aucun</li>
+                <li></li>
+            </ul>                     
+            <ul>
+                <h3>combat</h3>
+                <li>s'occuper du script pour item</li>
+                <li>s'occuper du script pour heal</li>
+                <li>hero atk spe + mana consomation</li>
+                <li>boss atk spe + mana consomation</li>
+                <li>coup critique</li>
+                <li>résistance et faiblesse ? betes, feu, magie etc ?</li>
+                <li>boss rank ? S,A,B,C,D,E + élite? + on monte dans les cycles => quota++ + monstre rank++ + elite chance++</li>
+                <li>élite = petite étoile top left de boss.name</li>
+            </ul>                     
+            <ul>
+                <h3>Fin de combat</h3>
+                <li>
+                    si mort != game over => combat perdut + cercle rouge => soul, gold et material /2 => nouveau combat + expedition rank-- (expedetion rank = récompense, unlockThings++ + badge (échangeable contre item special, unlock amélioration (arbre de talent)))
+                </li>
+                <li>
+                    récolte des ressources => xp, gold, soul, "monsters materials" etc + récompenses (items)
+                </li>
+                <li>
+                    if (lvlUP) => lvlupANim + getNewCarateristique (lvl+, life+, mana+, requiredXp+ etc) + lvlupModal 
+                </li>
+                <li>
+                    if chest = chestModal + chestOpeningANim => récolte récompenses
+                </li>
+                <li>if chest = mimic => prochain combat = mimic et avant la fin de la journée (1 combat de plus mais récompenses++)</li>
+                <li>new boss</li>
+                <li>new boss => if (élite) => new boss = élite</li>
+                <li>if 3 fight = fini => fin de journée => equiper item, learn scroll et newAtkSpe</li>
+            </ul>                     
+            <ul>
+                <h3>Fin de journée</h3>
+                <li>bilan de la journée ? objet utilisés, vie et mana perdu ? or et xp gagnés ? etc</li>
+            </ul>                     
+            <ul>
+                <h3>Fin d'expedition'</h3>
+                <li>if bilan >= quota => {newExpedition} else {game over} => each = récuperer or, soul (-50% soul if gameover)</li>
+                <li>marchand</li>
+            </ul>                     
+        </div>
     </main>
+    <script>
+        const gameplayOpenerBtn = document.getElementById("gameplayOpenerBtn")
+        const gameplayContainer = document.getElementById("gameplayContainer")
+        const todoOpenerBtn = document.getElementById("todoOpenerBtn")
+        const todo = document.getElementById("todo")
+
+        gameplayOpenerBtn.addEventListener("click", () => {
+            if (gameplayContainer.style.display === "block") {
+                gameplayContainer.style.display = "none"
+                return
+            }
+            gameplayContainer.style.display = "block"  
+        })
+
+        todoOpenerBtn.addEventListener("click", () => {
+            if (todo.style.display === "flex") {
+                todo.style.display = "none"
+                return
+            }
+            todo.style.display = "flex"  
+        })
+    </script>
 </body>
 </html>

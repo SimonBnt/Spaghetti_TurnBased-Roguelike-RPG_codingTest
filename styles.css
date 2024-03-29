@@ -8,15 +8,23 @@ body {
     main {
         width: 100%;
         display: flex;
-        justify-content: center;
+        gap: 0 2rem;
+        justify-content: space-between;
         align-items: center;
         position: relative;
         background-color: #73bda8;
 
+        #gameplayOpenerBtn {
+            border: solid 4px #333;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            background-color: #eee;
+            color: #333;
+            margin-left: 2rem;
+        }
+
         #gameplayContainer {
-            position: absolute;
-            top: 2rem;
-            left: 2rem;
             color: black;
             z-index: 10000;
             border: solid 4px #333;
@@ -24,6 +32,7 @@ body {
             background-color: #8df0d4;
             width: 450px;
             box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.4);
+            display: none;
 
             li {
                 list-style: none;
@@ -42,18 +51,6 @@ body {
                 content: "- ";
             }
         }
-        
-        #gameOver {
-            display: none;
-            text-transform: uppercase;
-            color: black;
-            z-index: 1000;
-            position: absolute;
-            top: 35%;
-            left: 50%;
-            transform: translate(-50%);
-            font-size: 1.25rem;
-        }
     
         #gameContainer {
             border: solid 4px #333;
@@ -64,6 +61,18 @@ body {
             margin: 2rem 0rem;
             position: relative;
             box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.4);
+
+            .earnedCurrencyAmount, #earnedGuildCoin {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 50%;
+            }
+
+            .earnedCurrencyAnimation {
+                display: block;
+                animation: earnedCurrencyAnimation 2s forwards;
+            }
 
             h1 {
                 position: absolute;
@@ -80,50 +89,116 @@ body {
             #topContainer {
                 margin: 1rem;
                 display: flex;
+                flex-direction: column;
                 justify-content: center;
                 align-items: center;
     
                 #inventoryContainer {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    width: fit-content;
-                    gap: 0.5rem 0;
-                    margin: 1rem auto 1rem 1rem;
+                    position: absolute;
+                    top: 1rem;
+                    left: 1rem;
                     font-size: 0.8rem;
                     text-align: center;
                 }
                 
                 #codexContainer {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
+                    position: absolute;
                     text-align: center;
-                    width: fit-content;
-                    gap: 0.5rem 0;
+                    top: 1rem;
+                    right: 1rem;
                     font-size: 0.8rem;
-                    margin: auto 1rem 1rem 1rem;
                 }
     
                 #codex, #armor {
                     width: 30px;
                 }
+
+                #dayContainer {
+                    margin-top: 4rem;
+                    background-color: #73bda8;
+                    border: solid 4px #333;
+                    border-radius: 0.5rem;
+                    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
+                    text-align: center;
+                    padding: 0.5rem;
+                    display: flex;
+                    gap: 1rem 0;
+                    flex-direction: column;
+                    text-transform: uppercase;
+                    align-items: center;
+
+                    #dayContainerTopContent {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 0 2rem;
+
+                        .monsterMaterialsImg {
+                            width: 20px;
+                        }
+
+                        #quotaContent {
+                            display: flex;
+                            gap: 0 0.5rem;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                    }
+                    
+                    #dayContent {
+                        display: flex;
+                        gap: 0 0.5rem;
+                        align-items: center;
+                        justify-content: center;
+                        
+                        h3 {
+                            font-size: 0.6rem;
+                        }
+    
+                        .eventPosition {
+                            border: solid 4px #333;
+                            border-radius: 0.5rem;
+                            padding: 0.25rem;
+                            height: 10px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+
+                        .currentDay {
+                            background-color: #eee;
+                        }
+    
+                        .day {
+                            border: solid 4px #333;
+                            border-radius: 0.5rem;
+                            padding: 0.25rem;
+        
+                            img {
+                                width: 10px;
+                                padding: 0.25rem;
+                            }
+    
+                            .currentFight {
+                                border: solid #333 2px;
+                                background-color: #999;
+                                border-radius: 100%;
+                            }
+    
+                            .fightIsWon {
+                                border: solid green 2px;
+                                border-radius: 100%;
+                            }
+    
+                            .fightIsLost {
+                                border: solid red 2px;
+                                border-radius: 100%;
+                            }
+                        }
+                    }
+                }
             }
 
-            #waveContainer {
-                position: absolute;
-                top: 6.5rem;
-                left: 50%;
-                transform: translateX(-50%);
-                background-color: #73bda8;
-                padding: 1rem;
-                border-radius: 0.5rem;
-                z-index: 10000;
-                border: solid 4px #333;
-                border-radius: 0.5rem;
-                box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.1);
-            }
-    
             #screen {
                 border: solid 4px #333;
                 border-radius: 0.25rem;
@@ -133,6 +208,57 @@ body {
                 color: black;
                 overflow-x: hidden;
                 box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+                background-color: #73bda8;
+                
+                #eventContainer {
+                    position: absolute;
+                    top: 20%;
+                    left: 50%;
+                    transform: translate(-50%);
+                    border: solid 4px #333;
+                    border-radius: 0.5rem;
+                    padding: 0.5rem;
+                    background-color: #73bda8;
+                    z-index: 1000000;
+                    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+                    width: 500px;
+                    height: 250px;
+                    justify-content: center;
+                    display: none;
+
+                    #eventModalContent {
+                        display: flex;
+                        justify-content: center;
+                        flex-direction: column;
+                        gap: 0.5rem 0;
+                        text-align: center;
+
+                        #eventClosingBtn {
+                            position: absolute;
+                            top: 0.5rem;
+                            right: 0.5rem;
+                            border: solid #333 2px;
+                            border-radius: 0.25rem;
+                            padding: 0.25rem;
+                            background-color: indianred;
+
+                            .eventOption {
+
+                            }
+                        }
+                    }
+                }
+
+                #fightState {
+                    display: none;
+                    text-transform: uppercase;
+                    color: black;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%);
+                    font-size: 1.25rem;
+                }
 
                 #turnContainer {
                     display: none;
@@ -165,22 +291,50 @@ body {
                     }
                 }
             
-                #goldSoulContainer {
+                #bankContainer {
                     width: fit-content;
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     gap: 0 0.5rem;
+                    margin: 0.5rem 0 0 0.5rem;
 
-                    .goldSould {
+                    #monsterMaterialsContainer {
+                        display: flex;
+                        gap: 0 0.5rem;
+                        justify-content: center;
+                        align-items: center;
+                        position: relative;
+
+                        .monsterMaterialsImg {
+                            width: 30px;
+                        }
+                    }
+
+                    #goldContainer {
+                        position: relative;
+                    }
+
+                    #soulContainer {
+                        position: relative;
+                    }
+
+                    #guildCoinContainer {
+                        position: relative;
+                    }
+
+                    .bankItem {
                         display: flex;
                         justify-content: center;
                         align-items: center;
                         gap: 0 0.25rem;
+                        border: solid 2px #333;
+                        border-radius: 0.5rem;
+                        padding: 0.25rem;
                     }
 
-                    #guildCoinImg {
-                        width: 20px;
+                    .bankItemImg {
+                        width: 30px;
                     }
                 }
             
@@ -264,6 +418,10 @@ body {
                     #heroImg {
                         width: 64px;
                     }
+
+                    .death {
+                        animation : deathAnimation 0.5s forwards;
+                    }
                 }
                 
                 #bossContainer {
@@ -283,6 +441,10 @@ body {
                             top: 0;
                             right: 0;
                             width: 32px;
+                        }
+
+                        .death {
+                            animation : deathAnimation 0.5s forwards;
                         }
                     }
 
@@ -368,6 +530,54 @@ body {
                 padding: 1rem;
                 color: #eee;
                 box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        #todoOpenerBtn {
+            border: solid 4px #333;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            cursor: pointer;
+            background-color: #eee;
+            color: #333;
+            margin-right: 2rem;
+        }
+
+        #todo {
+            display: none;
+            width: 500px;
+            height: 800px;
+            border: #eee solid 4px;
+            border-radius: 0.5rem;
+            background-color: #333;
+            color: #eee;
+            padding: 1rem;
+            margin-right: 2rem;
+            font-size: 1.25rem;
+            flex-direction: column;
+            gap: 1rem 0;
+            overflow: auto;
+
+            ul {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                gap: 1rem 0;
+                align-items: center;
+                list-style: none;
+                
+                h3 {
+                    padding: 0.25rem;
+                    border-radius: 0.5rem;
+                    background-color: #eee;
+                    color: #333;
+                }
+                
+                li {
+                    border: #eee solid 1px;
+                    border-radius: 0.5rem;
+                    padding: 0.25rem;
+                }
             }
         }
     
@@ -801,5 +1011,28 @@ body {
 
     100% {
         transform : translateX(0)
+    }
+}
+
+@keyframes deathAnimation {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+}
+
+@keyframes earnedCurrencyAnimation {
+    0% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-30px);
+        opacity: 0;
     }
 }

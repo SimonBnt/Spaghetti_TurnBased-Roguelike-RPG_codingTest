@@ -1,64 +1,108 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // -- HUD DOM -- //
 
-    // -- DOM -- //
-
-    const gameOver = document.getElementById("gameOver")
+    const fightState = document.getElementById("fightState")
     const turnContainer = document.getElementById("turnContainer")
+
     const heroTurnContainer = document.getElementById("heroTurn")
     const bossTurnContainer = document.getElementById("bossTurn")
+
     const heroLifeBarContainer = document.getElementById("heroLifeBarContainer")
     const heroManaBarContainer = document.getElementById("heroManaBarContainer")
     const heroXpBarContainer = document.getElementById("heroXpBarContainer")
+
     const bossLifeBarContainer = document.getElementById("bossLifeBarContainer")
     const bossManaBarContainer = document.getElementById("bossManaBarContainer")
     const controllerContainer = document.getElementById("controllerContainer")
+
+    const gameStateContainer = document.getElementById("gameStateContainer")
+    const bag = document.getElementById("bag")
+
+    // -- EVENT DOM -- //
+
+    const eventContainer = document.getElementById("eventContainer")
+    const eventText = document.getElementById("eventText")
+    const eventOptionText = document.querySelectorAll(".eventOptionText")
+
+    // -- CURRENT STATE DOM -- //
+
+    const days = document.querySelectorAll(".day")
+    const fights = document.querySelectorAll(".fight")
+
+    // -- CHEST DOM -- //
 
     const chestModal = document.getElementById("chestModal")
     const chest = document.getElementById("chestImg")
     const earnedGoldFromChestImg = document.getElementById("earnedGoldFromChestImg")
     const earnedGoldFromChest = document.getElementById("earnedGoldFromChest")
 
+    // -- MODALS DOM -- //
+
     const lvlUpModal = document.getElementById("lvlUpModal")
     // const openChest = document.getElementById("openChest")
+
+    // -- CODEX DOM -- //
 
     const codex = document.getElementById("codex")
     const codexModal = document.getElementById("codexModal")
     const codexClosingBtn = document.getElementById("codexClosingBtn")
 
+    // -- INVENTORY/ARMOR DOM -- //
+
     const armor = document.getElementById("armor")
     const inventoryModal = document.getElementById("inventoryModal")
     const inventoryClosingBtn = document.getElementById("inventoryClosingBtn")
+
+    // -- QUOTA DOM -- //
     
+    const quotaContainer = document.getElementById("quotaContainer")
+
+    // -- CURRENCY DOM -- //
+
     const goldAmount = document.getElementById("goldAmount")
     const coinImg = document.getElementById("coinImg")
+
     const soulAmount = document.getElementById("soulAmount")
     const soulImg = document.getElementById("soulImg")
+
     const guildCoinAmount = document.getElementById("guildCoinAmount")
     const guildCoinImg = document.getElementById("guildCoinImg")
+
+    const monsterMaterialsAmount = document.getElementById("monsterMaterialsAmount")
+
+    const earnedCurrencyAmount = document.querySelectorAll(".earnedCurrencyAmount")
+    const earnedGold = document.getElementById("earnedGold")
+    const earnedSoul = document.getElementById("earnedSoul")
+    const earnedMonsterMaterials = document.getElementById("earnedMonsterMaterials")
+    const earnedGuildCoin = document.getElementById("earnedGuildCoin")
+
+    // -- HERO DOM -- //
 
     const heroImg = document.getElementById("heroImg")
     const heroName = document.getElementById("heroName")
     const heroLvl = document.getElementById("heroLvl")
+
+    // -- BOSS DOM -- //
 
     const bossName = document.getElementById("bossName")
     const bossLvl = document.getElementById("bossLvl")
     const bossImg = document.getElementById("bossImg")
     const bossChestImgContainer = document.getElementById("bossChestImgContainer")
 
-    const gameStateContainer = document.getElementById("gameStateContainer")
-    const waveContainer = document.getElementById("waveContainer")
-    const bag = document.getElementById("bag")
-
+    // -- CONTROLLS DOM -- //
+    
     const controllBtns = document.querySelectorAll(".controllBtns");
     const atkBtn = document.getElementById("atkBtn")
     const itemBtn = document.getElementById("itemBtn")
     const healBtn = document.getElementById("healBtn")
 
-    // -- OBJECTS -- //
+                                        // -- SCRIPT -- //
+
+    // -- OBJECTS AND TABLES-- //
 
     let hero = {
         name : "Hero",
-        atk : 1,
+        atk : 100,
         def : 1,
         hp : 20,
         maxHp : 20,
@@ -70,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
         lvl : 1,
         coinInPocket : 0,
         soulInPocket : 0,
+        monsterMaterialsInPocket : 0,
         guildCoinInPocket : 0,
         weight : 0,
         maxWeight : 100,
@@ -79,10 +124,12 @@ document.addEventListener("DOMContentLoaded", function () {
         isHeroTurnAnimationFinished : false,
         isHeroActionChoosed : false,
 
-        heroDeath : () => {
-            hero.isHeroAlive = false
-            gameOver.style.display = "block"
-        }
+        heroIsDead : false,
+
+        // heroDeath : () => {
+        //     hero.isHeroAlive = false
+        //     gameOver.style.display = "block"
+        // }
     }
 
     let loot = {
@@ -125,6 +172,7 @@ document.addEventListener("DOMContentLoaded", function () {
         lvl : undefined,
         earnedGold : undefined,
         earnedSoul : undefined,
+        earnedMonsterMaterials : undefined,
         earnedXp : undefined,
 
         isBossAlive : true,
@@ -134,60 +182,59 @@ document.addEventListener("DOMContentLoaded", function () {
         isBossWithChest : false,
         isBossActionChoosed : false,
 
+        bossIsDead : false,
+
         bossDeath : (hero) => {
-            boss.maxHp = 0
-            boss.hp = 0
-            actualWave += 1
-    
             hero.xp += boss.earnedXp 
             hero.coinInPocket += boss.earnedGold 
+            hero.monsterMaterialsInPocket += boss.earnedMonsterMaterials
             hero.soulInPocket += boss.earnedSoul 
     
-            showGoldAmount(hero)
-            showSoulAmount(hero)
+            showCurrencyAmount(hero)
             updateHeroBars()
-            showWave()
+            showEarnedCurrency(boss)
     
             let message = `${boss.name} is dead ! ${hero.name} earn ${boss.earnedGold} gold, ${boss.earnedSoul} soul and ${boss.earnedXp} xp.`
     
-            if (boss.isBossWithChest) {
-                let chanceToBeMimic = Math.floor(Math.random() * 100)
+            // if (boss.isBossWithChest) {
+            //     let chanceToBeMimic = Math.floor(Math.random() * 100)
 
-                if (chanceToBeMimic >= 1) {
-                    console.log("Is a mimic")
-                } else {
-                    let chestIsOpen = false
-                    chestModal.style.display = "block"
-                    chest.src = "/img/chest/closedChest.png"
-                    
-                    chest.addEventListener("click", () => {
-                        chest.src = "/img/chest/openedChest.png"
-                        earnedGoldFromChestImg.style.display = "block"
-                        
-                        let earnedGold = (hero.lvl * 50) + (boss.lvl * 10)
-                        
-                        earnedGoldFromChest.innerHTML = earnedGold
-                        chestIsOpen = true
-                    })
-    
-                    if (chestIsOpen === true) {
-                        isNewBossCanBeCreated = true
-                    }
-                }
-            }
-    
-            // if (isNewBossCanBeCreated) {
-            //     if (actualWave === 10) {
-            //         message = `${hero.name} reach wave 10, an elite boss is summoned from the deep !`
-            //         displayMessage(message, () => {
-            //         })
-        
-            //         // eliteBoss(boss)
+            //     if (chanceToBeMimic >= 1) {
+            //         console.log("Is a mimic")
             //     } else {
-            //         // createBoss(hero, boss)
-            //         console.log("bite")
+            //         let chestIsOpen = false
+            //         chestModal.style.display = "block"
+            //         chest.src = "/img/chest/closedChest.png"
+                    
+            //         chest.addEventListener("click", () => {
+            //             chest.src = "/img/chest/openedChest.png"
+            //             earnedGoldFromChestImg.style.display = "block"
+                        
+            //             let earnedGold = (hero.lvl * 50) + (boss.lvl * 10)
+                        
+            //             earnedGoldFromChest.innerHTML = earnedGold
+                        // showGuildCoinAmount(boss)
+            //             chestIsOpen = true
+            //         })
+    
+            //         if (chestIsOpen === true) {
+            //             isNewBossCanBeCreated = true
+            //         }
             //     }
             // }
+    
+            // // if (isNewBossCanBeCreated) {
+            // //     if (actualWave === 10) {
+            // //         message = `${hero.name} reach wave 10, an elite boss is summoned from the deep !`
+            // //         displayMessage(message, () => {
+            // //         })
+        
+            // //         // eliteBoss(boss)
+            // //     } else {
+            // //         // createBoss(hero, boss)
+            // //         console.log("bite")
+            // //     }
+            // // }
     
             displayMessage(message, () => {})
         }
@@ -233,17 +280,80 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // -- FLAGS VARIABLES -- //
+    // -- VARIABLES AND FLAGS -- //
     
-    let actualWave = 1
-
     let isMessageHaveFinishToDisplay = false
+    let eventIsSelected = false
+    let quota = 100
+    let currentDay = 1
+    let currentFight = 1
+
+    let fightIsWon = false
+    let fightIsLost = false
+
+                                            // -- SCRIPT -- //
     
     // -- HUD -- //
 
-    const triggerGameOver = () => {
-        gameOver.style.display = "block"
+    const event = () => {
+        const eventBtn = document.getElementById("eventBtn")
+        eventContainer.style.display = "flex"
+
+        let eventList = {
+            0: {
+                text: "You found a bag !",
+                options: {
+                    0: {
+                        text: "Open the bag",
+                        result: "You found a sword !"
+                    },
+                    1: {
+                        text: "Leave the bag",
+                        result: "You found nothing !"
+                    }
+                }
+            },
+            1: {
+                text: "You found a chest !",
+                options: {
+                    0: {
+                        text: "Open the chest",
+                        result: "You found treasure !"
+                    },
+                    1: {
+                        text: "Leave the chest",
+                        result: "You missed out on treasure!"
+                    }
+                }
+            }
+        }
+
+        randomText = Math.floor(Math.random() * 2)
+
+        eventText.innerHTML = eventList[randomText].text
+
+        for (let i = 0; i < eventOptionText.length; i++) {
+            eventOptionText[i].innerHTML = eventList[randomText].options[i].text
+
+            eventOptionText[i].addEventListener("click", () => {
+                eventIsSelected = true
+                console.log(eventList[randomText].options[i].result)
+                console.log("event is selected = ", eventIsSelected)
+                eventContainer.style.display = "none"
+            })
+        }
+
     }
+
+    event()
+    // const triggerFightState = (state) => {
+    //     if (state === "win") {
+    //         fightState.innerHTML = "Win"
+    //     } else {
+    //         fightState.innerHTML = "Game Over"
+    //     }
+    //     fightState.style.display = "block"
+    // }
 
     const openBag = () => {
         console.log("here")
@@ -360,17 +470,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const showHud = () => {
-        showWave()
         showInfos()
         createHeroBar(hero)
         createBossBar(boss)
-        showGoldAmount(hero)
-        showSoulAmount(hero)
-        showGuildCoinAmount(hero)
-    }
-
-    const showWave = () => {
-        waveContainer.innerHTML = `${actualWave}/10`
+        showCurrencyAmount(hero)
+        displayQuota()
     }
 
     const showInfos = () => {
@@ -381,53 +485,60 @@ document.addEventListener("DOMContentLoaded", function () {
         bossLvl.innerHTML = `lvl ${boss.lvl}`
     }
 
+    const showCurrencyAmount = (hero) => {
+        showGoldAmount(hero)
+        showSoulAmount(hero)
+        showGuildCoinAmount(hero)
+        showMonsterMaterialsAmount(hero)
+    }
+
     const showGoldAmount = (hero) => {
         goldAmount.innerHTML = hero.coinInPocket 
 
-        let coinImgSources = [
-            "/img/coin/sprite_0.png",
-            "/img/coin/sprite_1.png",
-            "/img/coin/sprite_2.png",
-            "/img/coin/sprite_3.png",
-            "/img/coin/sprite_4.png",
-            "/img/coin/sprite_5.png",
-            "/img/coin/sprite_6.png",
-            "/img/coin/sprite_7.png",
-            "/img/coin/sprite_8.png",
-        ]
+        // let coinImgSources = [
+        //     "/img/coin/gold/sprite_0.png",
+        //     "/img/coin/gold/sprite_1.png",
+        //     "/img/coin/gold/sprite_2.png",
+        //     "/img/coin/gold/sprite_3.png",
+        //     "/img/coin/gold/sprite_4.png",
+        //     "/img/coin/gold/sprite_5.png",
+        //     "/img/coin/gold/sprite_6.png",
+        //     "/img/coin/gold/sprite_7.png",
+        //     "/img/coin/gold/sprite_8.png",
+        // ]
 
-        let currentIndex = 0
+        // let currentIndex = 0
 
-        function coinAnimation() {
-            currentIndex = (currentIndex + 1) % coinImgSources.length
-            const nextImg = coinImgSources[currentIndex]
-            coinImg.src = nextImg
-        }
+        // function coinAnimation() {
+        //     currentIndex = (currentIndex + 1) % coinImgSources.length
+        //     const nextImg = coinImgSources[currentIndex]
+        //     coinImg.src = nextImg
+        // }
     
-        setInterval(coinAnimation, 100)
+        // setInterval(coinAnimation, 100)
     }
 
     const showSoulAmount = (hero) => {
         soulAmount.innerHTML = hero.soulInPocket
 
-        let soulImgSources = [
-            "/img/soul/sprite_0.png",
-            "/img/soul/sprite_1.png",
-            "/img/soul/sprite_2.png",
-            "/img/soul/sprite_3.png",
-            "/img/soul/sprite_4.png",
-            "/img/soul/sprite_5.png",
-        ]
+        // let soulImgSources = [
+        //     "/img/soul/sprite_0.png",
+        //     "/img/soul/sprite_1.png",
+        //     "/img/soul/sprite_2.png",
+        //     "/img/soul/sprite_3.png",
+        //     "/img/soul/sprite_4.png",
+        //     "/img/soul/sprite_5.png",
+        // ]
 
-        let currentIndex = 0
+        // let currentIndex = 0
 
-        function soulAnimation() {
-            currentIndex = (currentIndex + 1) % soulImgSources.length
-            const nextImg = soulImgSources[currentIndex]
-            soulImg.src = nextImg
-        }
+        // function soulAnimation() {
+        //     currentIndex = (currentIndex + 1) % soulImgSources.length
+        //     const nextImg = soulImgSources[currentIndex]
+        //     soulImg.src = nextImg
+        // }
     
-        setInterval(soulAnimation, 100)
+        // setInterval(soulAnimation, 100)
     }
 
     const showGuildCoinAmount = (hero) => {
@@ -453,6 +564,22 @@ document.addEventListener("DOMContentLoaded", function () {
         // setInterval(guildCoinAnimation, 100)
     }
 
+    const showMonsterMaterialsAmount = (hero) => {
+        monsterMaterialsAmount.innerHTML = hero.monsterMaterialsInPocket
+    }
+
+    const showEarnedCurrency = (boss) => {
+        earnedCurrencyAmount.forEach(currency => currency.classList.add("earnedCurrencyAnimation"))
+        earnedGold.innerHTML = "+" + `${boss.earnedGold}`
+        earnedSoul.innerHTML = "+" + `${boss.earnedSoul}`
+        earnedMonsterMaterials.innerHTML = "+" + `${boss.earnedMonsterMaterials}`
+    }
+
+    const showEarnedGuildCoin = (boss) => {
+        earnedCurrencyAmount.style.display = "block"
+        earnedGuildCoin.innerHTML = "+" + `${boss.earnedGuildCoin}`
+    }
+
     const getColorByRatio = (ratio) => {
         if (ratio <= 0.3) {
             return "red"
@@ -461,6 +588,15 @@ document.addEventListener("DOMContentLoaded", function () {
         } else {
             return "green"
         }
+    }
+
+    const createEmptyBar = (container) => {
+        let barWidth = 80
+        let bar = document.createElement("div")
+        bar.style.width = barWidth + "px"
+        bar.style.backgroundColor = "grey"
+        bar.classList.add("bar")
+        container.appendChild(bar)
     }
 
     const createBar = (container, initialRatio, color) => {
@@ -548,26 +684,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // -- FIGHT LOGIC -- //
-
+    
     const heroAtk = () => {
         let delay = 1000
         heroImg.classList.add("heroAtkAnimation")
         let damage = (hero.atk + equipedEquipement.rightArm.atk)
-    
-        if (boss.hp > 0) {
-            atkAnimation(bossImg)
+        let inflictedDamageToBoss
 
-            // Simulate boss losing life unit by unit decrementally
-            for (let i = 0; i < damage; i++) {
-                setTimeout(() => {
-                    boss.hp--
-                    updateBossBars()
-                }, (damage - i) * 50) // Adjust the timeout delay as needed
-            }
-    
-            let message = `${hero.name} attacks and deals ${damage} damage to ${boss.name}!`
-            displayMessage(message, () => {})
+        atkAnimation(bossImg)
+
+        if (damage >= boss.hp) {
+            boss.isBossAlive = false
+            inflictedDamageToBoss = boss.hp
+        } else {
+            inflictedDamageToBoss = damage
         }
+
+        for (let i = 0; i < inflictedDamageToBoss; i++) {
+            setTimeout(() => {
+                boss.hp--
+                updateBossBars()
+
+                if (boss.hp <= 0) {
+                    bossImg.classList.add("death")
+                    boss.bossIsDead = true
+                }
+
+            }, (inflictedDamageToBoss - i) * 50)
+        }
+        
+        let message = `${hero.name} attacks and deals ${damage} damage to ${boss.name}!`
+        displayMessage(message, () => {})
     
         setTimeout(() => {
             heroImg.classList.remove("heroAtkAnimation")
@@ -814,12 +961,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
     const createBoss = (hero, boss) => {
+        bossImg.classList.remove("death")
         let selectedMobImg = mobImgs.wolf
-        let selectedBossName = "Wolf"
+        let selectedBossName = "wolf"
         let selectedLvl = hero.lvl
 
         let selectedMobImgNumber = Math.floor(Math.random() * 4)
-        let selectedStatNumber = Math.floor(Math.random() * 3)
+        let selectedStatNumber = Math.floor(Math.random() * 2)
 
         switch (selectedMobImgNumber) {
             case 0 : 
@@ -849,9 +997,6 @@ document.addEventListener("DOMContentLoaded", function () {
             case 1 : 
                 selectedLvl = (hero.lvl * 2)
                 break
-            case 2 : 
-                selectedLvl = (hero.lvl * 3)
-                break
             default : 
                 console.log("null")
         }
@@ -865,6 +1010,7 @@ document.addEventListener("DOMContentLoaded", function () {
         boss.hp = boss.maxHp
         boss.earnedGold = (10 * selectedLvl)
         boss.earnedSoul = (10 * selectedLvl)
+        boss.earnedMonsterMaterials = (10 * selectedLvl)
         boss.earnedXp = (10 * selectedLvl)
 
         createBossWithChest()
@@ -897,25 +1043,177 @@ document.addEventListener("DOMContentLoaded", function () {
         let delay = 1000
         bossImg.classList.add("bossAtkAnimation")
         let damage = boss.atk
+        let inflictedDamageToHero
 
-        if (hero.hp > 0) {
-            atkAnimation(heroImg)
+        atkAnimation(heroImg)
 
-            for (let i = 0; i < damage; i++) {
-                setTimeout(() => {
-                    hero.hp--
-                    updateHeroBars()
-                }, (damage - i) * 50) // Adjust the timeout delay as needed
-            }
-    
-            let message = `${boss.name} attacks and deals ${damage} damage to ${hero.name}!`
-
-            displayMessage(message, () => {})
+        if (damage >= hero.hp) {
+            hero.isHeroAlive = false
+            inflictedDamageToHero = hero.hp
+        } else {
+            inflictedDamageToHero = damage
         }
 
+        for (let i = 0; i < inflictedDamageToHero; i++) {
+            setTimeout(() => {
+                if (hero.hp > 0) {
+                    hero.hp--
+                    updateHeroBars()
+                } else {
+                    createEmptyBar(heroLifeBarContainer)
+                }
+            }, (inflictedDamageToHero - i) * 50)
+        }
+
+        let message = `${boss.name} attacks and deals ${damage} damage to ${hero.name}!`
+
+        displayMessage(message, () => {})
+
         setTimeout(() => {
-            bossImg.classList.remove("bossAtkAnimation");
-        }, delay);
+            bossImg.classList.remove("bossAtkAnimation")
+        }, delay)
+    }
+
+    // -- QUOTA LOGIC -- //
+
+    
+    const displayQuota = () => {
+        quotaContainer.innerHTML = "quota to reach : " + `${quota}`
+    }
+
+    const checkQuota = (hero) => {
+        let quotaMultiplier = 1.5
+
+        if (hero.monsterMaterialsInPocket >= quota) {
+            quota *= quotaMultiplier
+            displayQuota(quota)
+        } else {
+            console.log("Quota not reached !")
+            console.log("Game Over")
+        }
+    }  
+
+    // -- FIGHT AND CURRENT DAY  -- //
+
+    const showCurrentDay = (currentDay) => {
+        switch (currentDay) {
+            case 1 : 
+                days[0].classList.add("currentDay")
+                break
+            case 2 : 
+                days[0].classList.remove("currentDay")
+                days[1].classList.add("currentDay")
+                break
+            case 3 : 
+                days[1].classList.remove("currentDay")
+                days[2].classList.add("currentDay")
+                break
+            default : 
+                console.log("no day found")
+        }
+    }
+
+    const showCurrentFight = (currentFight) => {
+        switch (currentFight) {
+            case 1 : 
+                fights[0].classList.add("currentFight")
+                break
+            case 2 : 
+                fights[0].classList.remove("currentFight")
+                fights[1].classList.add("currentFight")
+
+                if (fightIsWon) {
+                    fights[0].classList.add("fightIsWon")
+                } else if (fightIsLost) {
+                    fights[0].classList.add("fightIsLost")
+                }
+
+                break
+            case 3 : 
+                fights[1].classList.remove("currentFight")
+                fights[2].classList.add("currentFight")
+
+                if (fightIsWon) {
+                    fights[1].classList.add("fightIsWon")
+                } else if (fightIsLost) {
+                    fights[1].classList.add("fightIsLost")
+                }
+                
+                break
+            case 4 : 
+                fights[2].classList.remove("currentFight")
+                fights[3].classList.add("currentFight")
+
+                if (fightIsWon) {
+                    fights[2].classList.add("fightIsWon")
+                } else if (fightIsLost) {
+                    fights[2].classList.add("fightIsLost")
+                }
+
+                break
+            case 5 : 
+                fights[3].classList.remove("currentFight")
+                fights[4].classList.add("currentFight")
+
+                if (fightIsWon) {
+                    fights[3].classList.add("fightIsWon")
+                } else if (fightIsLost) {
+                    fights[3].classList.add("fightIsLost")
+                }
+
+                break
+            case 6 : 
+                fights[4].classList.remove("currentFight")
+                fights[5].classList.add("currentFight")
+
+                if (fightIsWon) {
+                    fights[4].classList.add("fightIsWon")
+                } else if (fightIsLost) {
+                    fights[4].classList.add("fightIsLost")
+                }
+
+                break
+            case 7 : 
+                fights[5].classList.remove("currentFight")
+                fights[6].classList.add("currentFight")
+
+                if (fightIsWon) {
+                    fights[5].classList.add("fightIsWon")
+                } else if (fightIsLost) {
+                    fights[5].classList.add("fightIsLost")
+                }
+
+                break
+            case 8 : 
+                fights[6].classList.remove("currentFight")
+                fights[7].classList.add("currentFight")
+
+                if (fightIsWon) {
+                    fights[6].classList.add("fightIsWon")
+                } else if (fightIsLost) {
+                    fights[6].classList.add("fightIsLost")
+                }
+                
+                break
+            case 9 : 
+                fights[7].classList.remove("currentFight")
+                fights[8].classList.add("currentFight")
+
+                if (fightIsWon) {
+                    fights[7].classList.add("fightIsWon")
+                } else if (fightIsLost) {
+                    fights[7].classList.add("fightIsLost")
+                }
+
+                break
+            default : 
+                console.log("no fight found")
+        }
+    }
+
+    const showCurrentState = (currentDay, currentFight) => {
+        showCurrentDay(currentDay)
+        showCurrentFight(currentFight)
     }
 
     // -- GAME -- //
@@ -923,10 +1221,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const game = () => {
         createBoss(hero, boss)
         showHud()
+        showCurrentState(currentDay, currentFight)
+
+        // -- HERO TURN -- //
 
         const heroTurn = async () => {
             let canPerformNextTurn = false
             hero.isHeroActionChoosed = false
+            let newBossDelay = 3000
             
             await new Promise(resolve => {
                 heroTurnAnimation(() => {
@@ -979,21 +1281,38 @@ document.addEventListener("DOMContentLoaded", function () {
                 checkFinish()
             })
 
-            if (boss.hp <= 0) {
-                boss.isBossAlive = false
-                boss.hp = 0
-            }
-
             if (hero.isHeroActionChoosed === true && isMessageHaveFinishToDisplay === true) {
                 hero.isHeroTurn = false
                 boss.isBossTurn = true
                 canPerformNextTurn = true
             }
 
-            if (canPerformNextTurn === true) {
+            if (boss.isBossAlive === true && canPerformNextTurn === true) {
                 performTurnBasedLogic()
+            } else if (boss.bossIsDead === true) {
+                fightIsWon = true
+                boss.bossDeath(hero)
+
+                setTimeout(() => {
+                    earnedCurrencyAmount.forEach(currency => currency.classList.remove("earnedCurrencyAnimation"))
+                    createBoss(hero, boss)
+                    updateBossBars()
+                    currentFight++
+
+                    if (currentFight === 4) {
+                        currentDay++
+                    } else if (currentFight === 7) {
+                        currentDay++
+                    }
+
+                    hero.isHeroTurn = true
+                    boss.isBossTurn = false
+                    performTurnBasedLogic()
+                }, newBossDelay)
             }
         }
+
+        // -- BOSS TURN -- //
 
         const bossTurn = async () => {
             let canPerformNextTurn = false
@@ -1010,9 +1329,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 boss.isBossActionChoosed = true
 
-                if (hero.hp <= 0) {
-                    hero.heroDeath()
-                }
+                // if (hero.hp <= 0) {
+                //     hero.heroDeath()
+                // }
             }
 
             await new Promise(resolve => {
@@ -1035,31 +1354,25 @@ document.addEventListener("DOMContentLoaded", function () {
                 canPerformNextTurn = true
             }
 
-            if (canPerformNextTurn === true) {
+            if (hero.isHeroAlive === true && canPerformNextTurn === true) {
                 performTurnBasedLogic()
+            } else {
+                heroImg.classList.add("death")
+                fightIsLost = true
             }
         }
 
-        const performTurnBasedLogic = () => {
-            if (hero.isHeroTurn && hero.isHeroAlive) {
-                heroTurn()
-            } else  if (boss.isBossTurn === true && boss.isBossAlive) {
-                bossTurn()
-            } 
-            
-            if (hero.isHeroAlive === false) {
-                console.log("hero is dead")
-                triggerGameOver()
-            }
+        // -- TURN BASED LOGIC -- //
 
-            if (boss.isBossAlive === false) {
-                updateBossBars(boss)
-                console.log(boss.hp)
-                console.log("boss is dead")
-                // boss.bossDeath(hero)
-                gameStateContainer.textContent = ""
-                // createBoss(hero, boss)
-                // performTurnBasedLogic()
+        const performTurnBasedLogic = () => {
+            showInfos()
+            showCurrentState(currentDay, currentFight)
+            event()
+
+            if (eventIsSelected === true && hero.isHeroTurn) {
+                heroTurn()
+            } else if (boss.isBossTurn === true) {
+                bossTurn()
             }
         }
 
